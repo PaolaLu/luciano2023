@@ -1,0 +1,15 @@
+{
+  "name": "final",
+  "version": "1.0.0",
+  "description": "Trabajo final de Programación Web Dinámica 2020",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luciano Graziani <luciano.graziani@curza.uncoma.edu.ar>",
+  "license": "MIT",
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.14.3",
+    "prettier": "^2.0.5"
+  }
+}

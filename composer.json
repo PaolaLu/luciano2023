@@ -1,0 +1,38 @@
+{
+  "name": "pwd-2020/final",
+  "description": "Trabajo final de Programación Web Dinámica 2020",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Paola Sepulveda",
+      "email": "paolaluciasepulveda@gmail.com"
+    }
+  ],
+  "scripts": {
+    "phpmig": "phpmig",
+    "migrar": "phpmig rollback -t 0 && phpmig migrate",
+    "hidratar": "phpmig rollback -b ./hidratador.php -t 0 && phpmig migrate -b ./hidratador.php",
+    "crear:migracion": "phpmig generate",
+    "crear:hidratacion": "phpmig generate -b ./hidratador.php"
+  },
+  "autoload": {
+    "psr-4": {
+      "Src\\": "src/"
+    }
+  },
+  "require": {
+    "slim/slim": "^4.5",
+    "slim/psr7": "^1.1",
+    "brick/date-time": "^0.2.1",
+    "vlucas/phpdotenv": "^5.1",
+    "slim/php-view": "^3.0",
+    "middlewares/trailing-slash": "^2.0",
+    "endyjasmi/cuid": "^2.1"
+  },
+  "require-dev": {
+    "davedevelopment/phpmig": "^1.7",
+    "pimple/pimple": "^3.3",
+    "panique/pdo-debug": "^0.2.0"
+  }
+}
