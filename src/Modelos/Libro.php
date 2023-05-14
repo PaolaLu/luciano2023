@@ -39,7 +39,7 @@ public function serializarJson(): array
         'isbn'=> $this->isbn,
         'titulo'=> $this->titulo,
         'autor'=> $this->autor,
-        'edicion'=> $this->edicion, 
+        'edicion'=> $this->edicion,
     ];
 }
 }
