@@ -7,4 +7,35 @@ use Brick\DateTime\LocalDate;
 
 class Socio extends ModeloBase
 {
+    private string $dni;
+    private string $nombre_apellido;
+    private LocalDate $nacimiento;
+
+    public function __construct(?string $id, string $dni, string $nombre_apellido, string $nacimiento)
+    {
+        parent::__construct($id);
+        $this->dni = $dni;
+        $this->nombre_apellido = $nombre_apellido;
+        $this->nacimiento = LocalDate::parse($nacimiento);
+        
+    }
+
+    public function serializarBd(): array
+    {
+        return[
+            'id'=>$this->id,
+            'dni'=>$this->dni,
+            'nombreApellido'=>$this->nombre_apellido,
+            'nacimiento'=>(string)$this->nacimiento,
+        ];
+    }
+    public function serializarJson(): array
+    {
+        return[
+              'id'=>$this->id,
+              'dni'=> $this->dni,
+              'nombreApellido'=>$this->nombre_apellido,
+              'nacimiento'=> (string)$this->nacimiento,
+        ];
+    }
 }
