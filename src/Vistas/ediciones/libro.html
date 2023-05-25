@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+    <title>Editar Libro </title>
+</head>
+<body>
+            <h1 class="text-center mt-5">Editar libro</h1>
+
+
+  <div id="app">
+    <div class="container">
+
+       <form @submit.prevent="editarLibro" class="form-control">
+            <div class="my-3 text-center"> 
+             <label for="isbn" class="form-label">ID:</label>
+             <input type="text" id="id" v-model="nuevoLibro.id" required readonly>
+            </div>
+
+            <div class="my-3 text-center"> 
+             <label for="isbn" class="form-label">ISBN:</label>
+             <input type="text" id="isbn" v-model="nuevoLibro.isbn" required>
+            </div>
+
+            <div  class="mb-3 text-center">
+              <label for="titulo" class="form-label">Título:</label>
+              <input type="text" id="titulo" v-model="nuevoLibro.titulo" required>
+            </div>
+
+            <div  class="mb-3 text-center">
+              <label for="autor" class="form-label">Autor:</label>
+              <input type="text" id="autor" v-model="nuevoLibro.autor" required>
+            </div>
+   
+   
+            <div class="mb-3 text-center">
+              <label for="edicion">Edición:</label>
+              <input type="number" id="edicion" v-model="nuevoLibro.edicion" required>
+            </div>
+      
+            <div class="mb-3 text-center">
+              <button class="btn-primary text-center" @click="editarLibro" type="submit">Editar Libro</button>
+            </div>
+   
+        </form>
+    </div>
+</div>
+
+
+<script>
+    new Vue({
+  el: '#app',
+  data: {
+    nuevoLibro: {
+      id:'',
+      isbn: '',
+      titulo: '',
+      autor: '',
+      edicion: null
+    }
+  },
+  mounted() {
+    // Obtener el ID del libro de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const libroId = urlParams.get('id');
+
+    if (libroId) {
+      // Si se proporciona un ID de libro en la URL, buscar y mostrar los datos del libro
+      this.buscarLibro(libroId);
+    }
+  },
+  methods: {
+    editarLibro() {
+      // Hacer la solicitud POST para crear un nuevo libro
+      that=this;
+      axios.put('http://localhost:8080/api/libros/'+this.nuevoLibro.id, [this.nuevoLibro.id,this.nuevoLibro.isbn,this.nuevoLibro.titulo,this.nuevoLibro.autor,this.nuevoLibro.edicion])
+        .then(function(response) {
+          // La solicitud fue exitosa, el libro fue creado
+          // Aquí puedes realizar acciones adicionales, como mostrar un mensaje de éxito o redireccionar a otra página
+                // La solicitud fue exitosa, el libro fue editado
+                console.log('Libro editado:', response.data);
+
+                // Restablecer los valores de los campos del formulario
+          
+                // Redirigir a listados/libros.html
+                window.location.href = '../listados/libros.html';
+        })
+        .catch(function(error) {
+          // Ocurrió un error al hacer la solicitud
+          console.error('Error al editar el libro:', error);
+          // Aquí puedes manejar el error, mostrar un mensaje de error, etc.
+        });
+    },
+
+    buscarLibro(id){
+      that=this;
+        axios.get('http://localhost:8080/api/libros/'+id)
+        .then(function(response) {
+          // La solicitud fue exitosa, el libro fue creado
+           // Asignar los datos del libro encontrado al objeto nuevoLibro          
+           libroEncontrado=response.data;
+           that.nuevoLibro.id = libroEncontrado[0].id;
+           that.nuevoLibro.isbn = libroEncontrado[0].isbn;
+           that.nuevoLibro.titulo = libroEncontrado[0].titulo;
+           that.nuevoLibro.autor = this.libroEncontrado[0].autor;
+           that.nuevoLibro.edicion = libroEncontrado[0].edicion;
+          
+          // Aquí puedes realizar acciones adicionales, como mostrar un mensaje de éxito o redireccionar a otra página
+        })
+        .catch(function(error) {
+          // Ocurrió un error al hacer la solicitud
+          console.error('Error al crear el libro:', error);
+          
+          // Aquí puedes manejar el error, mostrar un mensaje de error, etc.
+        });
+    }
+  }
+});
+
+  </script>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  
+
+
+</body>
+</html>

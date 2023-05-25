@@ -15,8 +15,9 @@ final class LibroDao extends DaoAbstracto
         });
 
         return $datos;
-
     }
+
+    
  public static function buscarPorId(string $id)
 
  {
