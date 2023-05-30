@@ -1,86 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-    <title>Nuevo Libro</title>
-</head>
-<body>
-       
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Nuevo libro</title>
+  </head>
+  <body>
     <h1 class="text-center mt-5">Alta libro</h1>
 
 
 
-    <div id="app">
-      <div class="container">
-      <form @submit.prevent="crearLibro" class="form-control">
-  
-        <div class="my-3 text-center"> 
-            <label for="isbn" class="form-label">ISBN:</label>
-            <input type="text" id="isbn" v-model="nuevoLibro.isbn" required>
-        </div>
+  <div id="app">
+    <div class="container">
+    <form @submit.prevent="crearLibro" class="form-control">
 
-        <div class="mb-3 text-center">
-           <label for="titulo" class="form-label">Título:</label>
-           <input type="text" id="titulo" v-model="nuevoLibro.titulo" required>
-        </div>
-
-        <div class="mb-3 text-center">
-           <label for="autor" class="form-label">Autor:</label>
-           <input type="text" id="autor" v-model="nuevoLibro.autor" required>
-        </div>
-
-        <div class="mb-3 text-center">
-          <label for="edicion">Edición:</label>
-          <input type="number" id="edicion" v-model="nuevoLibro.edicion" required>
-        </div>
-
-        <div class="mb-3 text-center">
-          <button class="btn-primary text-center" @click="crearLibro" type="submit">Crear Libro</button>
-        </div> 
-  
-      </form>  
-    </div>    
+      <div class="my-3 text-center"> 
+          <label for="isbn" class="form-label">ISBN:</label>
+        <input type="text" id="isbn" v-model="nuevoLibro.isbn" required>
+      </div>
+      <div  class="mb-3 text-center">
+        <label for="titulo" class="form-label">Título:</label>
+        <input type="text" id="titulo" v-model="nuevoLibro.titulo" required>
+      </div>
+      <div  class="mb-3 text-center">
+        <label for="autor" class="form-label">Autor:</label>
+        <input type="text" id="autor" v-model="nuevoLibro.autor" required>
+      </div>
+   
       
-    
-    
-    <script>
-      new Vue({
-    el: '#app',
-    data: {
-      nuevoLibro: {
-        isbn: '',
-        titulo: '',
-        autor: '',
-        edicion: null
-      }
-    },
-    methods: {
-      crearLibro() {
-        that=this;
-        axios.post('http://localhost:8080/api/libros',[this.nuevoLibro.isbn,this.nuevoLibro.titulo,this.nuevoLibro.autor,this.nuevoLibro.edicion])
-          .then(function(response) {
-            
-            console.log('Libro creado:', response.data);
-            window.location.href = '../listados/libros.html';
-          })
-          .catch(function(error) {
-            console.error('Error al crear el libro:', error);
-       
-          });
-      }
+      <div class="mb-3 text-center">
+        <label for="edicion">Edición:</label>
+        <input type="number" id="edicion" v-model="nuevoLibro.edicion" required>
+      </div>
+          
+
+      <div class="mb-3 text-center">
+        <button class="btn-primary text-center" @click="crearLibro" type="submit">Crear Libro</button>
+      </div>
+      
+    </form>
+  </div>
+  </div>
+  
+  <script>
+    new Vue({
+  el: '#app',
+  data: {
+    nuevoLibro: {
+      isbn: '',
+      titulo: '',
+      autor: '',
+      edicion: null
     }
-  });
+  },
+  methods: {
+    crearLibro() {
+
+      that=this;
+      axios.post('http://localhost:8080/api/libros', [this.nuevoLibro.isbn,this.nuevoLibro.titulo,this.nuevoLibro.autor,this.nuevoLibro.edicion])
+        .then(function(response) {
+
+          console.log('Libro creado:', response.data);
+          window.location.href = '../listados/libros.html';
+        })
+        .catch(function(error) {
+          console.error('Error al crear el libro:', error);
+     
+        });
+    }
+  }
+});
+
+  </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
   
-    </script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  
-    
-    </body>
-    </html>
+  </div>
+  </body>
+</html>
