@@ -26,19 +26,19 @@
           </tr>
         </thead>
         <tbody>
-            <tr v-for="socio in socios" :key="socio[0]">
+            <tr v-for="socio in socios" :key="socio.id">
+                <td>{{ socio.id }}</td>
+                <td>{{ socio.dni }}</td>
+                <td>{{ socio.nombre_apellido}}</td>
+                <td>{{ socio.nacimiento }}</td>
+
                
-        
-                <td>{{ socio[0] }}</td>
-                <td>{{ socio[1] }}</td>
-                <td>{{ socio[2] }}</td>
-                <td>{{ socio[3] }}</td>
                
                 <td>
-                    <button class="actualizar-btn btn btn-primary" :data-id="socio[0]" @click="actualizarSocio(socio[0])">Actualizar</button>
+                    <button class="actualizar-btn btn btn-primary" :data-id="socio.id" @click="actualizarSocio(socio.id)">Actualizar</button>
                 </td>
                 <td>
-                    <button class="borrar-btn btn btn-danger" :data-id="socio[0]" @click="borrarSocio(socio[0])">Borrar</button>
+                    <button class="borrar-btn btn btn-danger" :data-id="socio.id" @click="borrarSocio(socio.id)">Borrar</button>
                 </td>
             </tr>
         </tbody>
@@ -49,22 +49,17 @@
     var app = new Vue({
         el: '#app',
         data: {
-          message: null,
           socios:[]
         },mounted(){
             console.log('axios si')
             that=this
-             // Realiza la solicitud GET a /api/libros
              axios.get('http://localhost:8080/api/socios/')
              .then(function(response) {
-                // La solicitud fue exitosa, la respuesta contiene los datos de los libros
                 that.socios = response.data[0];
                 console.log(that.socios)
    
   })
             .catch(error => {
-                // Maneja el error en caso de que la solicitud falle
-                console.log("si, entro a error de socios listado")
                 console.error(error);
             });
         },
@@ -72,24 +67,19 @@
                 borrarSocio(id) {
                     axios.delete('http://localhost:8080/api/socios/' + id)
                         .then(function(response) {
-                            // La solicitud DELETE fue exitosa
                             console.log('Socio borrado con éxito');
-                            // Aquí puedes realizar cualquier acción adicional después de borrar el libro
                             window.location.href = '../listados/socios.html';
                         })
                         .catch(function(error) {
-                            // Maneja el error en caso de que la solicitud DELETE falle
                             console.error('Error al borrar el socio:', error);
                         });
                 },
                 actualizarSocio(id) {
-                        const editUrl = `http://localhost:5500/src/Vistas/ediciones/socio.html?id=${id}`
-                        // Redirigir a la página de edición
+                        const editUrl = `http://localhost:5501/src/Vistas/ediciones/socio.html?id=${id}`
                         window.location.href = editUrl;
                 }
             },
             updated() {
-                // Actualiza los botones de "Actualizar" y "Borrar" después de renderizar la vista
                 var that = this;
                 this.$nextTick(function() {
                     var actualizarBtns = document.getElementsByClassName('actualizar-btn');

@@ -25,7 +25,7 @@ class Socio extends ModeloBase
         return[
             'id'=>$this->id,
             'dni'=>$this->dni,
-            'nombreApellido'=>$this->nombre_apellido,
+            'nombre_apellido'=>$this->nombre_apellido,
             'nacimiento'=>(string)$this->nacimiento,
         ];
     }
@@ -34,7 +34,7 @@ class Socio extends ModeloBase
         return[
               'id'=>$this->id,
               'dni'=> $this->dni,
-              'nombreApellido'=>$this->nombre_apellido,
+              'nombre_apellido'=>$this->nombre_apellido,
               'nacimiento'=> (string)$this->nacimiento,
         ];
     }

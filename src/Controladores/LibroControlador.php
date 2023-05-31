@@ -2,18 +2,16 @@
 
 namespace Src\Controladores;
 
-use Exception;
+
 use Src\Bd\LibroDao;
 use Src\Modelos\Libro;
-use Src\Modelos\ModeloBase;
+
 
 class LibroControlador implements ControladorInterface
 {
     public static function listar(): array
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: GET, POST,PUT,DELETE"); 
-        header("Access-Control-Allow-Headers: Content-Type"); 
+     
         $nuevodao = new LibroDao();
         $libros =  $nuevodao->listar();
         return $libros;
@@ -29,9 +27,7 @@ class LibroControlador implements ControladorInterface
 
     public static function crear(array $parametrosCrudos): array
     {
-        header("Access-Control-Allow-Origin: *"); 
-        header("Access-Control-Allow-Methods: GET, POST,PUT,DELETE"); 
-        header("Access-Control-Allow-Headers: Content-Type");
+
         $librodao = new LibroDao();
         $libro = new Libro(null, $parametrosCrudos[0], $parametrosCrudos[1], $parametrosCrudos[2], $parametrosCrudos[3]);
         $librodao->persistir($libro);
