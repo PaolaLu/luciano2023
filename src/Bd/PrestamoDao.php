@@ -5,6 +5,7 @@ namespace Src\Bd;
 use PDO;
 use PDOStatement;
 use Src\Modelos\ModeloBase;
+use Src\Modelos\Prestamo;
 
 final class PrestamoDao extends DaoAbstracto
 {
@@ -16,8 +17,18 @@ final class PrestamoDao extends DaoAbstracto
         });
             return $datos;
 
-        }
+            $instancias = [];
+
+            foreach ($datos as $fila) {
+                $prestamo  = new Prestamo ($fila[0], $fila[1], $fila[2], $fila[3], $fila[4],$fila[5]);
+                $instancias[] = $prestamo->serializarbd();
+            }
+    
+            return $instancias;
+
+    }
         
+    
         public static function buscarPorId(string $id)
         {$query = "SELECT * FROM prestamos WHERE id = :id LIMIT 1";
             $parametros = array(":id" => $id);

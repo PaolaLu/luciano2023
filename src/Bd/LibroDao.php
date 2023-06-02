@@ -15,14 +15,14 @@ final class LibroDao extends DaoAbstracto
         $datos=self::ejecutar("SELECT * from libros ",[],function( PDO $con,PDOStatement $consulta){
             return $consulta->fetchAll(PDO::FETCH_NUM);
         });
-  
-        $instancias=[];
-    
-        foreach($datos as $fila){
-           $libro= new Libro($fila[0],$fila[1],$fila[2],$fila[3],intval($fila[4]));
-           $instancias[] = $libro->serializarbd();
+
+        $instancias = [];
+
+        foreach ($datos as $fila) {
+            $libro = new Libro($fila[0], $fila[1], $fila[2], $fila[3], intval($fila[4]));
+            $instancias[] = $libro->serializarbd();
         }
-       
+
         return $instancias;
     }
 
