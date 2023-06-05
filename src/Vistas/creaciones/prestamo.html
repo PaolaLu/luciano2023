@@ -8,25 +8,129 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <title>Creaciones Libro </title>
+    <title>Nuevo Prestamo </title>
 </head>
 <body>
 
     <h1 class="text-center mt-5"> Alta Prestamo </h1>
-    
+    <div id="app">
     <div class="container">
-        <form @submit.prevent="crearPrestamo" class="form-control">
+
+       <form @submit.prevent="crearPrestamo" class="form-control">
             <div class="my-3 text-center">
-               <label for="inicio" class="form-label">inicio:</label>
+               <label for="inicio" class="form-label">Inicio:</label>
                <input type="datetime-local" id="inicio" v-model="nuevoPrestamo.inicio" required>    
             </div>
 
             <div class="mb-3 text-center">
-                <label for="vencimiento" class="form-label"> Vencimiento</label>
+                <label for="vencimiento" class="form-label"> Vencimiento:</label>
                 <input type="datetime-local" id="vencimiento" v-model="nuevoPrestamo.vencimiento" required>
             </div>
             
+            <div class="mb-3 text-center">
+                <label for="fin" class="form-label">Fin:</label>
+                <input type="datetime-local" id="fin" v-model="nuevoPrestamo.fin" required>
+            </div>
+
+            <div class="mb-3 text-center">
+                <label for="libro">Libro:</label>
+                <select id="libro" v-model="libroSeleccionado" required>
+                    <option v-for="libro in libros" :value="libro">{{ libro[2] }}</option>
+                </select>
+            </div>
+
+            <div class="mb-3 text-center">
+                <label for="socio">Socio:</label>
+                <select id="socio" v-model="socioSeleccionado" required>
+                    <option v-for="socio in socios" :value="socio">{{ socio[2] }}</option>
+                </select>
+            </div>
+
+            <div class="mb-3 text-center">
+                <button class="btn-primary text-center" type="submit">Crear Prestamo</button>
+            </div>
+           
         </form> 
     </div>
+    </div>
+
+    <script>
+        new Vue({
+        el:'#app',
+        data: {
+            libroSeleccionado:{},
+            socioSeleccionado:{},
+            nuevoPrestamo: {
+                inicio:'',
+                vencimiento:'',
+                fin:'',
+                libro_id:'',
+                socio_id:'',
+            },
+            libros: [],
+            socios: []
+        },
+        methods: {
+            crearPrestamo(){
+                //fecha convertidas al formato deseado
+                const inicioFormateado = this.convertirFechaHora(this.nuevoPrestamo.inicio);
+                const vencimientoFormateado = this.convertirFechaHora(this.nuevoPrestamo.vencimiento);
+                const finFormateado = this.convertirFechaHora(this.nuevoPrestamo.fin);
+                //solicitud post con los valores seleccionados en un array
+                axios.post('http://localhost:8080/api/prestamos',[
+                inicioFormateado,
+                vencimientoFormateado,
+                finFormateado,
+                //array crudo de libro y socio
+                this.libroSeleccionado,
+                this.socioSeleccionado    
+                ])
+                .then(function(response){
+                    window.location.href='../listados/prestamos.html';
+                })
+                .catch(function(error){
+                });
+            },
+            obtenerLibros(){
+                axios.get('http://localhost:8080/api/libros/')
+                .then(response => {
+                    this.libros = response.data;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los libros:', error);
+                });
+            },
+            obtenetSocios(){
+                axios.get('http://localhost:8080/api/socios/')
+                .then(response => {
+                    this.socios = response.data[0];
+                })
+                .catch(error => {
+                    console.error('Error al obtener los socios:', error);
+                });
+            },
+            convertirFechaHora(fechaHora){
+                const fecha = new Date(fechaHora);
+                const year = fecha.getFullYear().toString().padStart(4,'0');
+                const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
+                const day = fecha.getDate().toString().padStart(2, '0');
+                const hours = fecha.getHours().toString().padStart(2, '0');
+                const minutes = fecha.getMinutes().toString().padStart(2,'0');
+                const seconds = fecha.getSeconds().toString().padStart(2, '0');
+                const fechaFormateada = '${year}-${month}-${day}T${hours}:${minutes}:${seconds}';
+                return fechaFormateada;    
+            }
+            
+        },
+        mounted(){
+            this.obtenerLibros();
+            this.obtenetSocios();
+            console.log(this.obtenerLibros)
+        }
+
+        });
+
+    </script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
