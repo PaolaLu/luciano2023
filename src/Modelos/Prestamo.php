@@ -28,13 +28,14 @@ private Socio $socio;
     }
     public function serializarBd(): array
     {
+
         return [
             'id'=> $this->id,
             'inicio'=>(string)$this->inicio,
             'vencimiento'=>(string)$this->vencimiento,
             'fin'=>(string)$this->fin,
-            'libroId'=> $this->libro->id(),
-            'socioId'=>$this->socio->id()
+            'libro'=> $this->libro->id(),
+            'socio'=>$this->socio->id()
         ];
     }
        public function serializarJson(): array
