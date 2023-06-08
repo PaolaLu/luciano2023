@@ -1,1 +1,50 @@
-vista edicion Prestamo
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <title>Ediciones Prestamos </title>
+
+</head>
+<body>
+    <h1 class="text-center mt-5">Editar Prestamos </h1>
+    <div id="app">
+        <div class="container">
+            <form @submit.prevent="editarPrestamo" class="form-control">
+                <div class="my-3 text-center">
+                    <label for="id" class="form-label">Id:</label>
+                    <input type="text" id="id" v-model="nuevoPrestamo.id" required readonly>
+                </div>
+                <div class="my-3 text-center">
+                    <label for="inicio" class="form-label">Inicio</label>
+                    <input type="text" id="inicio" v-model="nuevoPrestamo.inicio" required>
+                </div>
+                <div class="mb-3 text-center">
+                    <label for="fin" class="form-label">Fin:</label>
+                    <input type="text" id="fin" v-model="nuevoPrestamo.fin" required>
+                </div>
+                <div class="mb-3 text-center">
+                    <label for="socio_id">Socio</label>
+                    <input type="text" id="socio_id" v-model="nombreSocio" required readonly>
+                </div>
+                <div class="mb-3 text-center">
+                    <label for="libro_id">Libro:</label>
+                    <input type="text" id="libro_id" v-model="tituloLibro" required readonly>
+                </div>
+                <div class="mb-3 text-center">
+                    <button class="btn-primary text-center" @click="editarPrestamo" type="submit">Editar Prestamo </button>
+                </div>
+
+            </form>
+        </div>
+        
+    </div>
+
+</body>
+</html>
