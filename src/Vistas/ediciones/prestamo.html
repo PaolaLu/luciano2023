@@ -43,7 +43,89 @@
 
             </form>
         </div>
-        
+        <script>
+            new Vue ({
+                el: '#app',
+                data: {
+                    nuevoPrestamo: {
+                        id:'',
+                        inicio: '',
+                        vencimiento:'',
+                        fin: '',
+                        libro_id:'',
+                        socio_id:''
+
+                    },
+                    tituloLibro:'',
+                    nombreSocio:'',
+                    libro:{},
+                    socio:{}
+                },
+                mounted(){
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const prestamoId = urlParams.get('id');
+                    if(prestamoId){
+                        this.buscarPrestamo(prestamoId);
+                    }
+                },
+                methods: {
+                    editarPrestamo(){
+                        const inicioFormateado = this.convertirFechaHora(this.nuevoPrestamo.inicio);
+                        const vencimientoFormateado = this.convertirFechaHora(this.nuevoPrestamo.vencimiento)
+                        const finFormateado = this.convertirFechaHora(this.nuevoPrestamo.fin);
+
+                        that = this;
+                        axios.put('http://localhost:8080/api/prestamos/' + this.nuevoPrestamo.id,[this.nuevoPrestamo.id,
+                    inicioFormateado,vencimientoFormateado,finFormateado,[this.libro.id,this.libro.isbn,this.libro.titulo,
+                    this.libro.autor,this.libro.edicion],[this.socio.id,this.socios.dni,this.socio.nombre_apellido,this.socio.nacimiento]])
+                    .then(function(response){
+                        //el libro fue creado y editado 
+                        console.log('prestamo editado:', response.data);
+                        //restablece los valores de los campos del formulario
+                        window.location.href = '../listados/prestamos.html';
+                    })
+                    .catch(function(error){
+                        console.log(this.socio.dni)
+                        console.error('error al editar el prestamo:', error);
+                    });
+                    },
+                    buscarPrestamo(id){
+                        that = this;
+                        axios.get('http://localhost:8080/api/prestamos/' + id)
+                        .then(function(response){
+                            //el libro fue creado 
+                            //se asignan los datos del libro encontrado al objeto nuevoLibro
+                            prestamoEncontrado = response.data;
+                            console.log(that.nuevoPrestamo)
+                            that.nuevoPrestamo.id = prestamoEncontrado[0].id;
+                            that.nuevoPrestamo.inicio = prestamoEncontrado[0].inicio;
+                            that.nuevoPrestamo.vencimiento = prestamoEncontrado[0].vencimiento;
+                            that.nuevoPrestamo.fin = prestamoEncontrado[0].fin;
+                            that.nuevoPrestamo.libro_id = that.obtenerTituloLibro(prestamoEncontrado[0].libro_id);
+                            that.nuevoPrestamo.socio_id = that.obtenerNombreSocio(prestamoEncontrado[0].socio_id);
+                        })
+                        .catch(function(error){
+                            console.error('error al crear el prestamo:', error);
+                        });
+                    },
+                    obtenerTituloLibro(idLibro){
+                        axios.get('http://localhost:8080/api/libros/'+ idLibro)
+                        .then(function(response){
+                            //almacena el titulo del libro en el objeto tituloLibros
+                            that.tituloLibro = response.data[0].titulo;
+                            that.libro = response.data[0];
+                            console.log(that.tituloLibro)
+                        })
+                        .catch(function(error){
+                            console.error(error);
+                            return 'error al obtener el titulo del libro';
+                        });
+                    },
+                    
+                }
+
+            })
+        </script>
     </div>
 
 </body>
