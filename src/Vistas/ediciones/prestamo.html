@@ -43,6 +43,7 @@
 
             </form>
         </div>
+    
         <script>
             new Vue ({
                 el: '#app',
@@ -74,10 +75,10 @@
                         const vencimientoFormateado = this.convertirFechaHora(this.nuevoPrestamo.vencimiento)
                         const finFormateado = this.convertirFechaHora(this.nuevoPrestamo.fin);
 
-                        that = this;
+                         var that = this;
                         axios.put('http://localhost:8080/api/prestamos/' + this.nuevoPrestamo.id,[this.nuevoPrestamo.id,
                     inicioFormateado,vencimientoFormateado,finFormateado,[this.libro.id,this.libro.isbn,this.libro.titulo,
-                    this.libro.autor,this.libro.edicion],[this.socio.id,this.socios.dni,this.socio.nombre_apellido,this.socio.nacimiento]])
+                    this.libro.autor,this.libro.edicion],[this.socio.id,this.socio.dni,this.socio.nombre_apellido,this.socio.nacimiento]])
                     .then(function(response){
                         //el libro fue creado y editado 
                         console.log('prestamo editado:', response.data);
@@ -121,12 +122,39 @@
                             return 'error al obtener el titulo del libro';
                         });
                     },
-                    
+                    obtenerNombreSocio(idSocio){
+                        var that = this;
+                        axios.get('http://localhost:8080/api/socios/' + idSocio)
+                        .then(function(response){
+                            //almacena el nombre y apellido del socio en el objeto nombreSocios
+                            that.nombreSocio=response.data[0].nombre_apellido;
+                            console.log(that.nombreSocio)
+                            that.socio=response.data[0];
+                            console.log('objeto socio')
+                            console.log(that.socio.dni)
+                        })
+                        .catch(function(error){
+                            console.error(error);
+                            return 'error al obtener el nombre y apellido del socio';
+                        });
+                    },
+                    convertirFechaHora(fechaHora){
+                        const fecha = new Date(fechaHora);
+                        const year = fecha.getFullYear().toString().padStart(4, '0');
+                        const month = (fecha.getMonth()+1).toString().padStart(2, '0');
+                        const day = fecha.getDate().toString().padStart(2, '0');
+                        const hours = fecha.getHours().toString().padStart(2,'0');
+                        const minutes = fecha.getMinutes().toString().padStart(2, '0');
+                        const seconds = fecha.getSeconds().toString().padStart(2,'0');
+                        const fechaFormateada = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+                        return fechaFormateada;
+
+                    }
                 }
 
-            })
+            });
         </script>
-    </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

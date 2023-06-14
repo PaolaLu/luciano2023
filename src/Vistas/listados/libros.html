@@ -30,27 +30,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="libro in libros" :key="libro.id">
+                <tr v-for="libro in libros" :key="libro[0]">
 
 
-                    <td>{{ libro.id }}</td>
-                    <td>{{ libro.isbn}}</td>
-                    <td>{{ libro.titulo }}</td>
-                    <td>{{ libro.autor }}</td>
-                    <td>{{ libro.edicion }}</td>
+                    <td>{{ libro[0] }}</td>
+                    <td>{{ libro[1] }}</td>
+                    <td>{{ libro[2] }}</td>
+                    <td>{{ libro[3] }}</td>
+                    <td>{{ libro[4] }}</td>
                     <td>
-                        <button class="actualizar-btn btn btn-primary" :data-id="libro.id"
-                            @click="actualizarLibro(libro.id)">Actualizar</button>
+                        <button class="actualizar-btn btn btn-primary" :data-id="libro[0]"
+                            @click="actualizarLibro(libro[0])">Actualizar</button>
                     </td>
                     <td>
-                        <button class="borrar-btn btn btn-danger" :data-id="libro.id"
-                            @click="borrarLibro(libro.id)">Borrar</button>
+                        <button class="borrar-btn btn btn-danger" :data-id="libro[0]"
+                            @click="borrarLibro(libro[0])">Borrar</button>
                     </td>
                 </tr>
             </tbody>
-
         </table>
-
     </div>
     
 
@@ -59,30 +57,31 @@
         var app = new Vue({
             el: '#app',
             data: {
-                message: null,
                 libros: []
             },
+
             mounted() {
                 var that = this;
                 console.log('llamada axios')
 
                 axios.get('http://localhost:8080/api/libros/')
-                    .then(function (response) {
+                    .then(function(response) {
                         that.libros = response.data;
                         console.log(response.data)
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.error(error);
                     });
             },
+
             methods: {
                 borrarLibro(id) {
                     axios.delete('http://localhost:8080/api/libros/' + id)
-                        .then(function (response) {
+                        .then(function(response) {
                             console.log('Libro borrado con éxito');
                             window.location.href = '../listados/libros.html';
                         })
-                        .catch(function (error) {
+                        .catch(function(error) {
                             console.error('Error al borrar el libro:', error);
                         });
                 },
@@ -97,7 +96,7 @@
                     var actualizarBtns = document.getElementsByClassName('actualizar-btn');
                     for (var j = 0; j < actualizarBtns.length; j++) {
                         var btn = actualizarBtns[j];
-                        btn.addEventListener('click', function () {
+                        btn.addEventListener('click', function() {
                             var id = this.getAttribute('data-id');
                             that.actualizarLibro(id);
                         });
@@ -106,7 +105,7 @@
                     var borrarBtns = document.getElementsByClassName('borrar-btn');
                     for (var k = 0; k < borrarBtns.length; k++) {
                         var btn = borrarBtns[k];
-                        btn.addEventListener('click', function () {
+                        btn.addEventListener('click', function() {
                             var id = this.getAttribute('data-id');
                             that.borrarLibro(id);
                         });
