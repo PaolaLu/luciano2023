@@ -26,19 +26,19 @@
           </tr>
         </thead>
         <tbody>
-            <tr v-for="socio in socios" :key="socio.id">
-                <td>{{ socio.id }}</td>
-                <td>{{ socio.dni }}</td>
-                <td>{{ socio.nombre_apellido}}</td>
-                <td>{{ socio.nacimiento }}</td>
+            <tr v-for="socio in socios" :key="socio[0]">
+                <td>{{ socio[0] }}</td>
+                <td>{{ socio[1] }}</td>
+                <td>{{ socio[2] }}</td>
+                <td>{{ socio[3] }}</td>
 
                
                
                 <td>
-                    <button class="actualizar-btn btn btn-primary" :data-id="socio.id" @click="actualizarSocio(socio.id)">Actualizar</button>
+                    <button class="actualizar-btn btn btn-primary" :data-id="socio[0]" @click="actualizarSocio(socio[0])">Actualizar</button>
                 </td>
                 <td>
-                    <button class="borrar-btn btn btn-danger" :data-id="socio.id" @click="borrarSocio(socio.id)">Borrar</button>
+                    <button class="borrar-btn btn btn-danger" :data-id="socio[0]" @click="borrarSocio(socio[0])">Borrar</button>
                 </td>
             </tr>
         </tbody>

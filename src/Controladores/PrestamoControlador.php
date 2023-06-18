@@ -25,7 +25,7 @@ class PrestamoControlador implements ControladorInterface
     public static function crear(array $parametrosCrudos): array
     {
         $prestamoDao= new PrestamoDao();
-        $libro = new Libro($parametrosCrudos[3][0],$parametrosCrudos[3][1],$parametrosCrudos[3][2],$parametrosCrudos[3][3]);
+        $libro = new Libro($parametrosCrudos[3][0],$parametrosCrudos[3][1],$parametrosCrudos[3][2],$parametrosCrudos[3][3],intval($parametrosCrudos[3][4]));
         $socio = new Socio($parametrosCrudos[4][0],$parametrosCrudos[4][1],$parametrosCrudos[4][2],$parametrosCrudos[4][3]);
         $prestamo = new Prestamo(null,$parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2],$libro,$socio);
         $prestamoDao->persistir($prestamo);
@@ -36,7 +36,8 @@ class PrestamoControlador implements ControladorInterface
         $nuevodao = new PrestamoDao();
         $libro = new Libro($parametrosCrudos[4][0],$parametrosCrudos[4][1],$parametrosCrudos[4][2],$parametrosCrudos[4][3],$parametrosCrudos[4][4]);
         $socio = new Socio($parametrosCrudos[5][0],$parametrosCrudos[5][1],$parametrosCrudos[5][2],$parametrosCrudos[5][3]);
-        $prestamo = new Prestamo($parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2],$libro,$socio);
+        $prestamo = new Prestamo($parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2],$parametrosCrudos[3],$libro,$socio);
+        $nuevodao->actualizar($prestamo);
         return [$prestamo];
     }
     public static function borrar(string $id): void

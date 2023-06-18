@@ -13,15 +13,7 @@ final class SocioDao extends DaoAbstracto
             return $consulta->fetchAll(PDO::FETCH_NUM);
         });
 
-        $instancias=[];
-    
-        foreach($datos as $fila){
-           $socio = new Socio($fila[0],$fila[1],$fila[2],$fila[3]);
-           $instancias[] = $socio->serializarbd();
-        }
-       
-        return $instancias;
-       
+        return $datos;       
 
     }
     public static function buscarPorId(string $id){

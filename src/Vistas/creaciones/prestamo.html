@@ -118,7 +118,7 @@
                 const hours = fecha.getHours().toString().padStart(2, '0');
                 const minutes = fecha.getMinutes().toString().padStart(2,'0');
                 const seconds = fecha.getSeconds().toString().padStart(2, '0');
-                const fechaFormateada = '${year}-${month}-${day}T${hours}:${minutes}:${seconds}';
+                const fechaFormateada = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
                 return fechaFormateada;    
             }
             

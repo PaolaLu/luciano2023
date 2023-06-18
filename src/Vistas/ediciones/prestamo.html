@@ -110,6 +110,7 @@
                         });
                     },
                     obtenerTituloLibro(idLibro){
+                       var that = this;
                         axios.get('http://localhost:8080/api/libros/'+ idLibro)
                         .then(function(response){
                             //almacena el titulo del libro en el objeto tituloLibros

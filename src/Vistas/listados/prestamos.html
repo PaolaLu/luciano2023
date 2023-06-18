@@ -91,7 +91,7 @@
                 },
                 obtenerNombreSocio(idSocio){
                     if(this.nombresSocios.hasOwnProperty(idSocio)){
-                        return this.nombreSocios[idSocio];
+                        return this.nombresSocios[idSocio];
                     }else{
                         var that = this;
                         axios.get('http://localhost:8080/api/socios/' + idSocio)

@@ -17,20 +17,12 @@ final class PrestamoDao extends DaoAbstracto
         });
             return $datos;
 
-            $instancias = [];
-
-            foreach ($datos as $fila) {
-                $prestamo  = new Prestamo ($fila[0], $fila[1], $fila[2], $fila[3], $fila[4],$fila[5]);
-                $instancias[] = $prestamo->serializarbd();
-            }
-    
-            return $instancias;
-
-    }
+   }
         
     
         public static function buscarPorId(string $id)
-        {$query = "SELECT * FROM prestamos WHERE id = :id LIMIT 1";
+        {
+            $query = "SELECT * FROM prestamos WHERE id = :id LIMIT 1";
             $parametros = array(":id" => $id);
             $datos = self::ejecutar($query, $parametros, function(PDO $con, PDOStatement $consulta){
                 return $consulta->fetch(PDO::FETCH_ASSOC);
@@ -40,7 +32,7 @@ final class PrestamoDao extends DaoAbstracto
 
         public static function persistir(ModeloBase $instancia): void
         {
-            $query = "INSERT INTO prestamo (id, inicio, vencimiento, fin, libro_id, socio_id)";
+            $query = "INSERT INTO prestamos (id, inicio, vencimiento, fin, libro_id, socio_id) VALUES (:id,:inicio, :vencimiento,:fin,:libro,:socio)";
             $parametros = $instancia->serializarBd();
             $resultado = self::ejecutar($query, $parametros, function(PDO $con, PDOStatement $consulta){
 
