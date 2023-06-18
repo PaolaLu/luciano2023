@@ -48,7 +48,7 @@ final class PrestamoDao extends DaoAbstracto
         }
         public static function borrar(string $id): void
         {
-            $sql = "DELETE FROM prestamo WHERE id =:id";
+            $sql ="DELETE from prestamos where id= :id";
             $parametros = array(":id"=> $id);
             $consulta = self::ejecutar($sql, $parametros, function (PDO $con, PDOStatement $consulta){});
             

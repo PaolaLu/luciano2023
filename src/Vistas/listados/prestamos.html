@@ -33,10 +33,10 @@
             </thead>
             <tbody>
                 <tr v-for="prestamo in prestamos" :key="prestamo[0]">
-                    <td>{{ prestamo [0]}} </td>
-                    <td>{{ prestamo [1]}} </td>
-                    <td>{{ prestamo [2]}} </td>
-                    <td>{{ prestamo [3]}} </td>
+                    <td>{{ prestamo[0]}} </td>
+                    <td>{{ prestamo[1]}} </td>
+                    <td>{{ prestamo[2]}} </td>
+                    <td>{{ prestamo[3]}} </td>
                     <td>{{ obtenerTituloLibro(prestamo[4]) }}</td>
                     <td>{{ obtenerNombreSocio(prestamo[5]) }}</td>
                     <td>
@@ -115,7 +115,7 @@
                     });
                 },
                     actualizarPrestamo(id) {
-                        const editUrl = 'http://localhost:5501/src/Vistas/ediciones/prestamo.html?id=${id}';
+                        const editUrl = `http://localhost:5501/src/Vistas/ediciones/prestamo.html?id=${id}`;
                         //redirige a la pagina de edicion
                         window.location.href = editUrl;
                     }
