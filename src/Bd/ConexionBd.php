@@ -33,7 +33,7 @@ final class ConexionBd
     {
     }
 
-    private function __wakeup()
+    public function __wakeup()
     {
     }
 }

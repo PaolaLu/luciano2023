@@ -42,6 +42,14 @@ public function serializarJson(): array
         'edicion'=> $this->edicion,
     ];
 }
+
+public function setTitulo(string $nuevoTitulo):void {
+    $this->titulo=$nuevoTitulo;
+}
+
+public function titulo(){
+    return $this->titulo;
+}
 }
 
 

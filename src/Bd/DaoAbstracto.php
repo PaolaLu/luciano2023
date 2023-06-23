@@ -25,7 +25,7 @@ abstract class DaoAbstracto implements DaoInterface
    * @param null|Closure $cb Función opcional que se utiliza
    *  para post procesar los datos de la db.
    */
-  protected static function ejecutar(
+    protected static function ejecutar(
     string $sql,
     array $params,
     ?Closure $cb = null
@@ -33,7 +33,7 @@ abstract class DaoAbstracto implements DaoInterface
     $conexion = ConexionBd::conectar();
     $consulta = $conexion->prepare($sql);
 
-    echo PdoDebugger::show($sql, $params) . "\n";
+   // echo PdoDebugger::show($sql, $params) . "\n";
 
     $consulta->execute($params);
 

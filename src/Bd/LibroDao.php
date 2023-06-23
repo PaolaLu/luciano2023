@@ -12,37 +12,39 @@ final class LibroDao extends DaoAbstracto
 
     public static function listar(): array
     {
-        $datos=self::ejecutar("SELECT * FROM libros ",[],function( PDO $con,PDOStatement $consulta){
+        $datos=self::ejecutar("SELECT * from libros ",[],function( PDO $con,PDOStatement $consulta){
             return $consulta->fetchAll(PDO::FETCH_NUM);
         });
+  
+            $instancias = [];
 
-        $instancias = [];
+            foreach ($datos as $fila) {
+               
+                $libro = new Libro($fila[0], $fila[1], $fila[2], $fila[3], intval($fila[4]));
+                $instancias[] = $libro;
+            }
 
-        foreach ($datos as $fila) {
-            array_push($instancias,new Libro($fila[0],$fila[1],$fila[2],$fila[3],$fila[4]));
-        }
-
-        return $datos;
+            return $instancias;
     }
 
     public static function buscarPorId(string $id)
-    {
-        $query = "SELECT * FROM libros WHERE id = :id LIMIT 1";
-        $parametros = array(":id" => $id);
-        
-        $datos = self::ejecutar($query, $parametros, function(PDO $con, PDOStatement $consulta) {
-            return $consulta->fetch(PDO::FETCH_ASSOC);
-        });
+{
+    $query = "SELECT * FROM libros WHERE id = :id LIMIT 1";
+    $parametros = array(":id" => $id);
     
-    return $datos;
-    }
+    $datos = self::ejecutar($query, $parametros, function(PDO $con, PDOStatement $consulta) {
+        return $consulta->fetch(PDO::FETCH_ASSOC);
+    });
+    $libro = new Libro($datos['id'], $datos['isbn'], $datos['titulo'], $datos['autor'], intval($datos['edicion']));
+    return $libro;
+}
 
 
 
     public static function persistir(ModeloBase $libro):void
     {
      
-        $query = "INSERT INTO libros (id, isbn, titulo, edicion, autor) VALUES (:id,:isbn,:titulo,:edicion,:autor)";
+        $query = "INSERT INTO libros (id,isbn, titulo, edicion, autor) VALUES (:id,:isbn, :titulo, :edicion, :autor)";
         $parametros = $libro->serializarBd();
         
         $resultado = self::ejecutar($query, $parametros, function(PDO $con, PDOStatement $consulta) {
@@ -54,7 +56,7 @@ final class LibroDao extends DaoAbstracto
     
     public static function actualizar(ModeloBase $instancia): void
     {
-        $query = "UPDATE libros  SET isbn=:isbn, titulo=:titulo, edicion=:edicion, autor=:autor where id=:id";
+        $query = "UPDATE libros  SET isbn=:isbn, titulo = :titulo, edicion=:edicion, autor=:autor where id=:id";
         $parametros = $instancia->serializarBd();
         
         $resultado = self::ejecutar($query, $parametros, function(PDO $con, PDOStatement $consulta) {
@@ -66,11 +68,12 @@ final class LibroDao extends DaoAbstracto
     
     public static function borrar(string $id): void
     {
-        $sql="DELETE FROM libros WHERE id=:id";
+        $sql="delete from libros where id= :id";
         $parametros = array(":id" => $id);
 
-    $consulta = self::ejecutar($sql, $parametros, function(PDO $con, PDOStatement $consulta){});
+    $consulta = self::ejecutar($sql,$parametros, function(PDO $con, PDOStatement $consulta){});
 
+    
     }
     
 }

@@ -82,6 +82,7 @@
         axios.get('http://localhost:8080/api/libros/'+id)
         .then(function(response) {
            libroEncontrado=response.data;
+           
            that.nuevoLibro.id = libroEncontrado[0].id;
            that.nuevoLibro.isbn = libroEncontrado[0].isbn;
            that.nuevoLibro.titulo = libroEncontrado[0].titulo;

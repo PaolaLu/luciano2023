@@ -2,37 +2,46 @@
 
 namespace Src\Controladores;
 
-
+use Exception;
 use Src\Bd\LibroDao;
 use Src\Modelos\Libro;
-
+use Src\Modelos\ModeloBase;
 
 class LibroControlador implements ControladorInterface
 {
     public static function listar(): array
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
-        header("Access-Control-Allow-Headers: Content-Type");
+       // header("Access-Control-Allow-Origin: *"); // Configurar el origen permitido, por ejemplo, "https://amazing.site"
+       // header("Access-Control-Allow-Methods: GET, POST,PUT,DELETE"); // Configurar los métodos permitidos
+       // header("Access-Control-Allow-Headers: Content-Type"); // Configurar las cabeceras permitidas
         $nuevodao = new LibroDao();
-        $libros =  $nuevodao->listar();
-
+        $librosDao =  $nuevodao->listar();
+        $libros=[];
+        foreach($librosDao as $libro){
+           $serializado= $libro->serializarBd();
+           $libros[]=$serializado;
+        }
+     //   $serializado = $libro->serializarBD();
+       // $nuevoLibros[] = $serializado;
         return $libros;
     }
 
     public static function buscarPorId(string $id): ?array
     {
-        $nuevodao = new LibroDao();
-        $nuevodao->buscarPorId($id);
-
-        return [$nuevodao->buscarPorId($id)];
+       $nuevodao = new LibroDao();
+       $libroDao= $nuevodao->buscarPorId($id);
+       $libro=[];
+       $serializado= $libroDao->serializarBd();
+       $libro[]=$serializado;
+       
+        return $libro;
     }
 
     public static function crear(array $parametrosCrudos): array
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
-        header("Access-Control-Allow-Headers: Content-Type");
+        //header("Access-Control-Allow-Origin: *"); // Configurar el origen permitido, por ejemplo, "https://amazing.site"
+        //header("Access-Control-Allow-Methods: GET, POST,PUT,DELETE"); // Configurar los métodos permitidos
+        //header("Access-Control-Allow-Headers: Content-Type"); // Configurar las cabeceras permitidas
         $librodao = new LibroDao();
         $libro = new Libro(null, $parametrosCrudos[0], $parametrosCrudos[1], $parametrosCrudos[2], $parametrosCrudos[3]);
         $librodao->persistir($libro);
