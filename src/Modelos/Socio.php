@@ -25,7 +25,7 @@ class Socio extends ModeloBase
         return[
             'id'=>$this->id,
             'dni'=>$this->dni,
-            'nombre_apellido'=>$this->nombre_apellido,
+            'nombreApellido'=>$this->nombre_apellido,
             'nacimiento'=>(string)$this->nacimiento,
         ];
     }
@@ -34,8 +34,15 @@ class Socio extends ModeloBase
         return[
               'id'=>$this->id,
               'dni'=> $this->dni,
-              'nombre_apellido'=>$this->nombre_apellido,
+              'nombreApellido'=>$this->nombre_apellido,
               'nacimiento'=> (string)$this->nacimiento,
         ];
+    }
+    public function setNombreApellido(string $nuevoNombre): void{
+    
+         $this->nombre_apellido= $nuevoNombre;
+    }
+    public function nombreApellido(){
+        return $this->nombre_apellido;
     }
 }

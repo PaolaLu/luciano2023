@@ -27,7 +27,7 @@
       </div>
       <div  class="mb-3 text-center">
         <label for="nombre_apellido" class="form-label"> Nombre y apellido :</label>
-        <input type="text" id="nombre_apellido" v-model="nuevoSocio.nombre_apellido" required>
+        <input type="text" id="nombre_apellido" v-model="nuevoSocio.nombreApellido" required>
       </div>
       <div  class="mb-3 text-center">
         <label for="nacimiento" class="form-label">Nacimiento :</label>
@@ -49,7 +49,7 @@
     nuevoSocio: {
       id:'',
       dni: '',
-      nombre_apellido: '',
+      nombreApellido: '',
       nacimiento: ''
     }
   },
@@ -65,7 +65,7 @@
 
   methods: {
     editarSocio() {
-      axios.put('http://localhost:8080/api/socios/'+this.editarSocio.id, [this.nuevoSocio.id,this.nuevoSocio.dni, this.nuevoSocio.nombre_apellido,this.nuevoSocio.nacimiento])
+      axios.put('http://localhost:8080/api/socios/'+this.nuevoSocio.id, [this.nuevoSocio.id,this.nuevoSocio.dni, this.nuevoSocio.nombreApellido,this.nuevoSocio.nacimiento])
         .then(function(response) {
           console.log('Socio editado :', response.data);
    
@@ -85,7 +85,7 @@
            socioEncontrado=response.data;
            that.nuevoSocio.id = socioEncontrado[0].id;
            that.nuevoSocio.dni = socioEncontrado[0].dni;
-           that.nuevoSocio.nombre_apellido = socioEncontrado[0].nombre_apellido;
+           that.nuevoSocio.nombreApellido = socioEncontrado[0].nombreApellido;
            that.nuevoSocio.nacimiento = socioEncontrado[0].nacimiento;
         })
         .catch(function(error) {

@@ -26,19 +26,19 @@
           </tr>
         </thead>
         <tbody>
-            <tr v-for="socio in socios" :key="socio[0]">
-                <td>{{ socio[0] }}</td>
-                <td>{{ socio[1] }}</td>
-                <td>{{ socio[2] }}</td>
-                <td>{{ socio[3] }}</td>
+            <tr v-for="socio in socios" :key="socio.id">
+                <td>{{ socio.id }}</td>
+                <td>{{ socio.dni }}</td>
+                <td>{{ socio.nombreApellido }}</td>
+                <td>{{ socio.nacimiento }}</td>
 
                
                
                 <td>
-                    <button class="actualizar-btn btn btn-primary" :data-id="socio[0]" @click="actualizarSocio(socio[0])">Actualizar</button>
+                    <button class="actualizar-btn btn btn-primary" :data-id="socio.id" @click="actualizarSocio(socio.id)">Actualizar</button>
                 </td>
                 <td>
-                    <button class="borrar-btn btn btn-danger" :data-id="socio[0]" @click="borrarSocio(socio[0])">Borrar</button>
+                    <button class="borrar-btn btn btn-danger" :data-id="socio.id" @click="borrarSocio(socio.id)">Borrar</button>
                 </td>
             </tr>
         </tbody>
@@ -55,15 +55,14 @@
             that=this
              axios.get('http://localhost:8080/api/socios/')
              .then(function(response) {
-                that.socios = response.data[0];
+                that.socios = response.data;
                 console.log(that.socios)
-   
-  })
-            .catch(error => {
-                console.error(error);
-            });
-        },
-         methods: {
+                })         
+                    .catch(error => {
+                      console.error(error);
+                    });
+            },
+             methods: {
                 borrarSocio(id) {
                     axios.delete('http://localhost:8080/api/socios/' + id)
                         .then(function(response) {
