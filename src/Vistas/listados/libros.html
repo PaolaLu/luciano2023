@@ -1,139 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+    crossorigin="anonymous"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-    <title>Libros</title>
-  </head>
+  <title>Libros</title>
+</head>
 
-  <body>
-    <div id="app">
-      <h2>Libros</h2>
-      <h3><a href="../creaciones/libro.html">Nuevo libro</a></h3>
-      <table
-        id="tabla-libros"
-        class="table table-striped table table-bordered border-primary"
-      >
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>ISBN</th>
-            <th>Título</th>
-            <th>Autor</th>
-            <th>Edición</th>
-            <th>Actualizar</th>
-            <th>Borrar</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="libro in libros" :key="libro.id">
-            <td>{{ libro.id }}</td>
-            <td>{{ libro.isbn}}</td>
-            <td>{{ libro.titulo }}</td>
-            <td>{{ libro.autor }}</td>
-            <td>{{ libro.edicion }}</td>
-            <td>
-              <button
-                class="actualizar-btn btn btn-primary"
-                :data-id="libro.id"
-                @click="actualizarLibro(libro.id)"
-              >
-                Actualizar
-              </button>
-            </td>
-            <td>
-              <button
-                class="borrar-btn btn btn-danger"
-                :data-id="libro.id"
-                @click="borrarLibro(libro.id)"
-              >
-                Borrar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<body>
+  <div id="app">
+    <h2>Libros</h2>
+    <h3><a href="../creaciones/libro.html">Nuevo libro</a></h3>
+    <table
+      id="tabla-libros"
+      class="table table-striped table table-bordered border-primary">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ISBN</th>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Edición</th>
+          <th>Actualizar</th>
+          <th>Borrar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="libro in libros" :key="libro.id">
+          <td>{{ libro.id }}</td>
+          <td>{{ libro.isbn}}</td>
+          <td>{{ libro.titulo }}</td>
+          <td>{{ libro.autor }}</td>
+          <td>{{ libro.edicion }}</td>
+          <td>
+            <button
+              class="actualizar-btn btn btn-primary"
+              :data-id="libro.id"
+              @click="actualizarLibro(libro.id)">
+              Actualizar
+            </button>
+          </td>
+          <td>
+            <button
+              class="borrar-btn btn btn-danger"
+              :data-id="libro.id"
+              @click="borrarLibro(libro.id)">
+              Borrar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <script>
-      var app = new Vue({
-        el: "#app",
-        data: {
-          message: null,
-          libros: [],
-        },
-        mounted() {
-          var that = this;
-          console.log("llamada axios");
+  <script>
+    var app = new Vue({
+      el: "#app",
+      data: {
+      
+        libros: [],
+      },
+      mounted() {
+        var that = this;
+        console.log("llamada fetch");
 
-   
-             axios.get("http://localhost:8080/api/libros/")
+        fetch('http://localhost:8080/api/libros/')
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            that.libros = data;
+            console.log(data);
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      },
+      methods: {
+        borrarLibro(id) {
+          fetch('http://localhost:8080/api/libros/' + id, {
+            method: "DELETE",
+          })
             .then(function (response) {
-              that.libros = response.data;
-              console.log(response.data);
+              console.log("Libro borrado con éxito");
+              window.location.href = "../listados/libros.html";
             })
             .catch(function (error) {
-              console.error(error);
+              console.error("Error al borrar el libro:", error);
             });
         },
-        methods: {
-          borrarLibro(id) {
-            axios
-              .delete("http://localhost:8080/api/libros/" + id)
-              .then(function (response) {
-                console.log("Libro borrado con éxito");
-                window.location.href = "../listados/libros.html";
-              })
-              .catch(function (error) {
-                console.error("Error al borrar el libro:", error);
-              });
-          },
-          actualizarLibro(id) {
-            const editUrl = `http://localhost:5501/src/Vistas/ediciones/libro.html?id=${id}`;
-            window.location.href = editUrl;
-          },
+        actualizarLibro(id) {
+          const editUrl = `http://localhost:5501/src/Vistas/ediciones/libro.html?id=${id}`;
+          window.location.href = editUrl;
         },
-        updated() {
-          var that = this;
-          this.$nextTick(function () {
-            var actualizarBtns = document.getElementsByClassName(
-              "actualizar-btn"
-            );
-            for (var j = 0; j < actualizarBtns.length; j++) {
-              var btn = actualizarBtns[j];
-              btn.addEventListener("click", function () {
-                var id = this.getAttribute("data-id");
-                that.actualizarLibro(id);
-              });
-            }
+      },
+      updated() {
+        var that = this;
+        this.$nextTick(function () {
+          var actualizarBtns = document.getElementsByClassName("actualizar-btn");
+          for (var j = 0; j < actualizarBtns.length; j++) {
+            var btn = actualizarBtns[j];
+            btn.addEventListener("click", function () {
+              var id = this.getAttribute("data-id");
+              that.actualizarLibro(id);
+            });
+          }
 
-            var borrarBtns = document.getElementsByClassName("borrar-btn");
-            for (var k = 0; k < borrarBtns.length; k++) {
-              var btn = borrarBtns[k];
-              btn.addEventListener("click", function () {
-                var id = this.getAttribute("data-id");
-                that.borrarLibro(id);
-              });
-            }
-          });
-        },
-      });
-    </script>
+          var borrarBtns = document.getElementsByClassName("borrar-btn");
+          for (var k = 0; k < borrarBtns.length; k++) {
+            var btn = borrarBtns[k];
+            btn.addEventListener("click", function () {
+              var id = this.getAttribute("data-id");
+              that.borrarLibro(id);
+            });
+          }
+        });
+      },
+    });
+  </script>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+</body>
 </html>
