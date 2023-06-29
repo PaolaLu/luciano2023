@@ -11,9 +11,6 @@ class LibroControlador implements ControladorInterface
 {
     public static function listar(): array
     {
-       // header("Access-Control-Allow-Origin: *"); // Configurar el origen permitido, por ejemplo, "https://amazing.site"
-       // header("Access-Control-Allow-Methods: GET, POST,PUT,DELETE"); // Configurar los métodos permitidos
-       // header("Access-Control-Allow-Headers: Content-Type"); // Configurar las cabeceras permitidas
         $nuevodao = new LibroDao();
         $librosDao =  $nuevodao->listar();
         $libros=[];
@@ -21,9 +18,7 @@ class LibroControlador implements ControladorInterface
            $serializado= $libro->serializarBd();
            $libros[]=$serializado;
         }
-     //   $serializado = $libro->serializarBD();
-       // $nuevoLibros[] = $serializado;
-        return $libros;
+            return $libros;
     }
 
     public static function buscarPorId(string $id): ?array
@@ -39,9 +34,6 @@ class LibroControlador implements ControladorInterface
 
     public static function crear(array $parametrosCrudos): array
     {
-        //header("Access-Control-Allow-Origin: *"); // Configurar el origen permitido, por ejemplo, "https://amazing.site"
-        //header("Access-Control-Allow-Methods: GET, POST,PUT,DELETE"); // Configurar los métodos permitidos
-        //header("Access-Control-Allow-Headers: Content-Type"); // Configurar las cabeceras permitidas
         $librodao = new LibroDao();
         $libro = new Libro(null, $parametrosCrudos[0], $parametrosCrudos[1], $parametrosCrudos[2], $parametrosCrudos[3]);
         $librodao->persistir($libro);
@@ -51,6 +43,7 @@ class LibroControlador implements ControladorInterface
 
     public static function actualizar(array $parametrosCrudos): array
     {
+     
         $nuevodao = new LibroDao();
         $libro = new Libro($parametrosCrudos[0], $parametrosCrudos[1], $parametrosCrudos[2], $parametrosCrudos[3], $parametrosCrudos[4]);
         $nuevodao->actualizar($libro);

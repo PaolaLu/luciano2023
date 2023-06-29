@@ -43,9 +43,11 @@
 </div>
   
   <script>
+
     new Vue({
-  el: '#app',
-  data: {
+
+     el: "#app",
+     data: {
     nuevoLibro: {
       isbn: '',
       titulo: '',
@@ -57,10 +59,24 @@
     crearLibro() {
 
      var that = this;
-      fecht('http://localhost:8080/api/libros', [this.nuevoLibro.isbn,this.nuevoLibro.titulo,this.nuevoLibro.autor,this.nuevoLibro.edicion])
-        .then(function(response) {
-          console.log('Libro creado:', response.data);
-          window.location.href = '../listados/libros.html';
+      fetch('http://localhost:8080/api/libros', {
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify([
+        this.nuevoLibro.isbn,
+        this.nuevoLibro.titulo,
+        this.nuevoLibro.autor,
+        this.nuevoLibro.edicion
+        ])
+      })
+        .then(function(response){
+          return response.json();
+        })
+        .then(function(data){
+         console.log('Libro creado:', data);
+         window.location.href = '../listados/libros.html';
         })
         .catch(function(error) {
           console.error('Error al crear el libro:', error);

@@ -86,6 +86,7 @@
       },
       methods: {
         borrarLibro(id) {
+           var that = this;
           fetch('http://localhost:8080/api/libros/' + id, {
             method: "DELETE",
           })
@@ -97,6 +98,7 @@
               console.error("Error al borrar el libro:", error);
             });
         },
+
         actualizarLibro(id) {
           const editUrl = `http://localhost:5501/src/Vistas/ediciones/libro.html?id=${id}`;
           window.location.href = editUrl;
