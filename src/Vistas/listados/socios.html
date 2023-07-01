@@ -50,21 +50,27 @@
         el: '#app',
         data: {
           socios:[]
-        },mounted(){
-            console.log('axios si')
-            that=this
-             axios.get('http://localhost:8080/api/socios/')
-             .then(function(response) {
-                that.socios = response.data;
-                console.log(that.socios)
+        },
+        mounted(){
+            const that = this;
+             fetch('http://localhost:8080/api/socios/')
+                    .then(function(response) {
+                     return response.json();
                 })         
-                    .catch(error => {
-                      console.error(error);
+                    .then(function(data){
+                        that.socios = data;
+                        console.log(data);
+                    })
+                    .catch(function(error){
+                        console.error(error);
                     });
             },
              methods: {
                 borrarSocio(id) {
-                    axios.delete('http://localhost:8080/api/socios/' + id)
+                    const  that = this;
+                    fetch('http://localhost:8080/api/socios/' + id,{
+                        method: 'DELETE'
+                    })
                         .then(function(response) {
                             console.log('Socio borrado con éxito');
                             window.location.href = '../listados/socios.html';
@@ -74,12 +80,12 @@
                         });
                 },
                 actualizarSocio(id) {
-                        const editUrl = `http://localhost:5501/src/Vistas/ediciones/socio.html?id=${id}`
+                        const editUrl = `../ediciones/socio.html?id=${id}`
                         window.location.href = editUrl;
                 }
             },
             updated() {
-                var that = this;
+                const that = this;
                 this.$nextTick(function() {
                     var actualizarBtns = document.getElementsByClassName('actualizar-btn');
                     for (var j = 0; j < actualizarBtns.length; j++) {

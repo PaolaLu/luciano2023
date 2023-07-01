@@ -33,15 +33,13 @@
         <label for="nacimiento" class="form-label">Nacimiento :</label>
         <input type="text" id="nacimiento" v-model="nuevoSocio.nacimiento" required>
       </div>
-  
-
       <div class="mb-3 text-center">
         <button class="btn-primary text-center" type="submit">Editar Socio</button>
       </div>
-   
     </form>
   </div>
-  </div>
+</div>
+
   <script>
     new Vue({
   el: '#app',
@@ -57,7 +55,6 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const socioId = urlParams.get('id');
-
     if (socioId) {
       this.buscarSocio(socioId);
     }
@@ -65,30 +62,44 @@
 
   methods: {
     editarSocio() {
-      axios.put('http://localhost:8080/api/socios/'+this.nuevoSocio.id, [this.nuevoSocio.id,this.nuevoSocio.dni, this.nuevoSocio.nombreApellido,this.nuevoSocio.nacimiento])
-        .then(function(response) {
-          console.log('Socio editado :', response.data);
-   
+      const that = this;
+      const data = JSON.stringify([
+        this.nuevoSocio.id,
+        this.nuevoSocio.dni,
+        this.nuevoSocio.nombreApellido,
+        this.nuevoSocio.nacimiento,
+      ]);
+
+      fetch(`http://localhost:8080/api/socios/${this.nuevoSocio.id}`,{
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+          body : data
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Socio editaddo:', data);
           window.location.href = '../listados/socios.html';
         })
-        .catch(function(error) {
-          console.error('Error al editar el socio :', error);
-          
-          
+        .catch(error => {
+          console.error('Error al editar el socio:', error);
         });
-    },
+      },
+
+
     buscarSocio(id){
-        console.log('entro a buscar socio')
-      that=this;
-        axios.get('http://localhost:8080/api/socios/'+id)
-        .then(function(response) {       
-           socioEncontrado=response.data;
-           that.nuevoSocio.id = socioEncontrado[0].id;
-           that.nuevoSocio.dni = socioEncontrado[0].dni;
-           that.nuevoSocio.nombreApellido = socioEncontrado[0].nombreApellido;
-           that.nuevoSocio.nacimiento = socioEncontrado[0].nacimiento;
+      const that = this;
+        fetch(`http://localhost:8080/api/socios/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          const socioEncontrado = data;
+           this.nuevoSocio.id = socioEncontrado[0].id;
+           this.nuevoSocio.dni = socioEncontrado[0].dni;
+           this.nuevoSocio.nombreApellido = socioEncontrado[0].nombreApellido;
+           this.nuevoSocio.nacimiento = socioEncontrado[0].nacimiento;
         })
-        .catch(function(error) {
+        .catch(error => {
           console.error('Error al editar el socio:', error);
         });
     }
