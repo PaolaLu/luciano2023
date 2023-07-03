@@ -10,9 +10,31 @@
     <title>Nuevo libro</title>
   </head>
   <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Biblioteca</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/libros">Libros</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/socios">Socios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/prestamos">Prestamos</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <h1 class="text-center mt-5">Alta libro</h1>
-    <h2><a href="/libros">Ir a Listado de libros</a></h2>
-  <div id="app">
+    
+  <div id="app" class="my-4">
     <div class="container">
     <form @submit.prevent="crearLibro" class="form-control">
 
@@ -33,6 +55,7 @@
         <input type="number" id="edicion" v-model="nuevoLibro.edicion" required>
       </div>
       <div class="mb-3 text-center">
+        <br>
         <button class="btn-primary text-center" @click="crearLibro" type="submit">Crear Libro</button>
       </div>   
     </form>
@@ -83,6 +106,10 @@
   </script>
   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+      © 2023 Biblioteca Las Grutas. Todos los derechos reservados.
+    </footer>
 
   </div>
   </body>

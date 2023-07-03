@@ -22,7 +22,6 @@ class LibroControlador implements ControladorInterface
 
     public static function buscarPorId(string $id): ?array
     {
-       
        $libroDao= LibroDao::buscarPorId($id);
        $libro=[];
        $serializado= $libroDao->serializarBd();
@@ -42,16 +41,13 @@ class LibroControlador implements ControladorInterface
 
     public static function actualizar(array $parametrosCrudos): array
     {
-     
-        $nuevodao = new LibroDao();
         $libro = new Libro($parametrosCrudos[0], $parametrosCrudos[1], $parametrosCrudos[2], $parametrosCrudos[3], $parametrosCrudos[4]);
-        $nuevodao->actualizar($libro);
+        LibroDao:: actualizar($libro);
         return [$libro];
     }
 
     public static function borrar(string $id): void
     {
-        $nuevodao = new LibroDao();
-        $nuevodao->borrar($id);
+        LibroDao::borrar($id);
     }
 }
