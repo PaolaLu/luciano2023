@@ -11,8 +11,7 @@ class LibroControlador implements ControladorInterface
 {
     public static function listar(): array
     {
-        $nuevodao = new LibroDao();
-        $librosDao =  $nuevodao->listar();
+        $librosDao =  LibroDao::listar();
         $libros=[];
         foreach($librosDao as $libro){
            $serializado= $libro->serializarBd();
@@ -23,8 +22,8 @@ class LibroControlador implements ControladorInterface
 
     public static function buscarPorId(string $id): ?array
     {
-       $nuevodao = new LibroDao();
-       $libroDao= $nuevodao->buscarPorId($id);
+       
+       $libroDao= LibroDao::buscarPorId($id);
        $libro=[];
        $serializado= $libroDao->serializarBd();
        $libro[]=$serializado;
@@ -34,9 +33,9 @@ class LibroControlador implements ControladorInterface
 
     public static function crear(array $parametrosCrudos): array
     {
-        $librodao = new LibroDao();
-        $libro = new Libro(null, $parametrosCrudos[0], $parametrosCrudos[1], $parametrosCrudos[2], $parametrosCrudos[3]);
-        $librodao->persistir($libro);
+        $libro = new Libro(null, $parametrosCrudos[0], $parametrosCrudos[1], $parametrosCrudos[2],
+         $parametrosCrudos[3]);
+        Librodao::persistir($libro);
 
         return [$libro];
     }
