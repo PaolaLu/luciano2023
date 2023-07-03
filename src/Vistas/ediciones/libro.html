@@ -10,7 +10,7 @@
 </head>
 <body>
   <h1 class="text-center mt-5">Editar libro</h1>
-
+  <h2><a href="/libros">Ir a Listado de libros</a></h2>
   <div id="app">
     <div class="container">
       <form @submit.prevent="editarLibro" class="form-control">
@@ -34,7 +34,6 @@
           <label for="edicion">Edición:</label>
           <input type="number" id="edicion" v-model="nuevoLibro.edicion" required>
         </div>
-
         <div class="mb-3 text-center">
           <button class="btn-primary text-center" @click="editarLibro" type="submit">Editar Libro</button>
         </div>
@@ -72,7 +71,7 @@
             this.nuevoLibro.edicion
           ]);
 
-          fetch(`http://localhost:8080/api/libros/${this.nuevoLibro.id}`, {
+          fetch(`/api/libros/${this.nuevoLibro.id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -82,7 +81,7 @@
             .then(response => response.json())
             .then(data => {
               console.log('Libro editado:', data);
-              window.location.href = '../listados/libros.html';
+              window.location.href = '/libros';
             })
             .catch(error => {
               console.error('Error al editar el libro:', error);
@@ -92,7 +91,7 @@
         buscarLibro(id) {
           const that = this;
 
-          fetch(`http://localhost:8080/api/libros/${id}`)
+          fetch(`/api/libros/${id}`)
             .then(response => response.json())
             .then(data => {
               const libroEncontrado = data;
