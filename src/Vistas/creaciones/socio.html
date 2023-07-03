@@ -12,32 +12,49 @@
     <title>Nuevo socio</title>
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Biblioteca</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/libros">Libros</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/socios">Socios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/prestamos">Prestamos</a>
+            </li>
+          </ul>  
+        </div>
+      </div>
+    </nav>
     <h1 class="text-center mt-5">Alta Socio</h1>
-<h2> <a href="../listados/socios.html">Ir a Listado de socios</a> </h2>
-
-
-  <div id="app">
+  <div id="app" class="my-5">
     <div class="container">
-    <form @submit.prevent="crearSocio" class="form-control">
 
-      <div class="my-3 text-center"> 
-          <label for="dni" class="form-label">DNI: </label>
-        <input type="text" id="dni" v-model="nuevoSocio.dni" required>
-      </div>
-      <div  class="mb-3 text-center">
-        <label for="nombre_apellido" class="form-label"> Nombre y apellido :</label>
-        <input type="text" id="nombre_apellido" v-model="nuevoSocio.nombre_apellido" required>
-      </div>
-      <div  class="mb-3 text-center">
-        <label for="nacimiento" class="form-label">Nacimiento :</label>
-        <input type="text" id="nacimiento" v-model="nuevoSocio.nacimiento" required>
-      </div>
-  
-
-      <div class="mb-3 text-center">
-        <button class="btn-primary text-center" type="submit">Crear Socio</button>
-      </div>
-    </form>
+          <form @submit.prevent="crearSocio" class="form-control form-control-sm my-3">
+            <div class="input-group flex-nowrap my-3">
+                <span class="input-group-text" id="addon-wrapping">DNI:</span>
+                <input type="text" class="form-control"v-model="nuevoSocio.dni"  placeholder="Número de documento" aria-label="DNI" aria-describedby="addon-wrapping" required>
+              </div>
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">Nombre y apellido:</span>
+                <input type="text" class="form-control"v-model="nuevoSocio.nombre_apellido"  placeholder="Nombre y apellido" aria-label="Nombre y apellido" aria-describedby="addon-wrapping" required>
+              </div>
+              <div class="input-group flex-nowrap my-3">
+                <span class="input-group-text" id="addon-wrapping">Nacimiento:</span>
+                <input type="date" class="form-control"v-model="nuevoSocio.nacimiento"  placeholder="Nacimiento" aria-label="Nacimiento" aria-describedby="addon-wrapping" required>
+              </div>
+              <div class="mb-3 text-center">
+                <button class="btn-primary text-center" type="submit">Crear Socio</button>
+            </div>
+        </form>
+        <br>
   </div>
 </div>
 
@@ -53,7 +70,9 @@
   },
   methods: {
     crearSocio() {
-      fetch('http://localhost:8080/api/socios', {
+      var that = this;
+      
+      fetch('/api/socios', {
         method: 'POST',
         headers:{
           'Content-Type':'application/json'
@@ -69,7 +88,7 @@
         })
         .then(function(data){
           console.log('Socio creado:', data);
-          window.location.href = '../listados/socios.html';
+          window.location.href = '/socios';
         })
         .catch(function(error) {
           console.error('Error al crear el socio :', error);
@@ -81,6 +100,11 @@
   </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+      © 2023 Biblioteca Las Grutas. Todos los derechos reservados.
+    </footer>
 
   </body>
 </html>
