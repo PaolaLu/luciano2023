@@ -1,161 +1,146 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-    <title>Ediciones Prestamos </title>
-
-</head>
-<body>
-    <h1 class="text-center mt-5">Editar Prestamos </h1>
-    <div id="app">
-        <div class="container">
-            <form @submit.prevent="editarPrestamo" class="form-control">
-                <div class="my-3 text-center">
-                    <label for="id" class="form-label">Id:</label>
-                    <input type="text" id="id" v-model="nuevoPrestamo.id" required readonly>
-                </div>
-                <div class="my-3 text-center">
-                    <label for="inicio" class="form-label">Inicio</label>
-                    <input type="text" id="inicio" v-model="nuevoPrestamo.inicio" required>
-                </div>
-                <div class="mb-3 text-center">
-                    <label for="fin" class="form-label">Fin:</label>
-                    <input type="text" id="fin" v-model="nuevoPrestamo.fin" required>
-                </div>
-                <div class="mb-3 text-center">
-                    <label for="socio_id">Socio</label>
-                    <input type="text" id="socio_id" v-model="nombreSocio" required readonly>
-                </div>
-                <div class="mb-3 text-center">
-                    <label for="libro_id">Libro:</label>
-                    <input type="text" id="libro_id" v-model="tituloLibro" required readonly>
-                </div>
-                <div class="mb-3 text-center">
-                    <button class="btn-primary text-center" @click="editarPrestamo" type="submit">Editar Prestamo </button>
-                </div>
-
-            </form>
+    <title>Editar prestamo</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Biblioteca</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/libros">Libros</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/socios">Socios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/prestamos">Prestamos</a>
+            </li>
+       
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+          </form>
         </div>
-    
-        <script>
-            new Vue ({
-                el: '#app',
-                data: {
-                    nuevoPrestamo: {
-                        id:'',
-                        inicio: '',
-                        vencimiento:'',
-                        fin: '',
-                        libro_id:'',
-                        socio_id:''
+      </div>
+    </nav>
+    <h1 class="text-center mt-5">Editar prestamo</h1>
 
-                    },
-                    tituloLibro:'',
-                    nombreSocio:'',
-                    libro:{},
-                    socio:{}
-                },
-                mounted(){
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const prestamoId = urlParams.get('id');
-                    if(prestamoId){
-                        this.buscarPrestamo(prestamoId);
-                    }
-                },
-                methods: {
-                    editarPrestamo(){
-                        const inicioFormateado = this.convertirFechaHora(this.nuevoPrestamo.inicio);
-                        const vencimientoFormateado = this.convertirFechaHora(this.nuevoPrestamo.vencimiento)
-                        const finFormateado = this.convertirFechaHora(this.nuevoPrestamo.fin);
 
-                         var that = this;
-                        axios.put('http://localhost:8080/api/prestamos/' + this.nuevoPrestamo.id,[this.nuevoPrestamo.id,
-                    inicioFormateado,vencimientoFormateado,finFormateado,[this.libro.id,this.libro.isbn,this.libro.titulo,
-                    this.libro.autor,this.libro.edicion],[this.socio.id,this.socio.dni,this.socio.nombre_apellido,this.socio.nacimiento]])
-                    .then(function(response){
-                        //el libro fue creado y editado 
-                        console.log('prestamo editado:', response.data);
-                        //restablece los valores de los campos del formulario
-                        window.location.href = '../listados/prestamos.html';
-                    })
-                    .catch(function(error){
-                        console.log(this.socio.dni)
-                        console.error('error al editar el prestamo:', error);
-                    });
-                    },
-                    buscarPrestamo(id){
-                        that = this;
-                        axios.get('http://localhost:8080/api/prestamos/' + id)
-                        .then(function(response){
-                            //el libro fue creado 
-                            //se asignan los datos del libro encontrado al objeto nuevoLibro
-                            prestamoEncontrado = response.data;
-                            console.log(that.nuevoPrestamo)
-                            that.nuevoPrestamo.id = prestamoEncontrado[0].id;
-                            that.nuevoPrestamo.inicio = prestamoEncontrado[0].inicio;
-                            that.nuevoPrestamo.vencimiento = prestamoEncontrado[0].vencimiento;
-                            that.nuevoPrestamo.fin = prestamoEncontrado[0].fin;
-                            that.nuevoPrestamo.libro_id = that.obtenerTituloLibro(prestamoEncontrado[0].libro_id);
-                            that.nuevoPrestamo.socio_id = that.obtenerNombreSocio(prestamoEncontrado[0].socio_id);
-                        })
-                        .catch(function(error){
-                            console.error('error al crear el prestamo:', error);
-                        });
-                    },
-                    obtenerTituloLibro(idLibro){
-                       var that = this;
-                        axios.get('http://localhost:8080/api/libros/'+ idLibro)
-                        .then(function(response){
-                            //almacena el titulo del libro en el objeto tituloLibros
-                            that.tituloLibro = response.data[0].titulo;
-                            that.libro = response.data[0];
-                            console.log(that.tituloLibro)
-                        })
-                        .catch(function(error){
-                            console.error(error);
-                            return 'error al obtener el titulo del libro';
-                        });
-                    },
-                    obtenerNombreSocio(idSocio){
-                        var that = this;
-                        axios.get('http://localhost:8080/api/socios/' + idSocio)
-                        .then(function(response){
-                            //almacena el nombre y apellido del socio en el objeto nombreSocios
-                            that.nombreSocio=response.data[0].nombre_apellido;
-                            console.log(that.nombreSocio)
-                            that.socio=response.data[0];
-                            console.log('objeto socio')
-                            console.log(that.socio.dni)
-                        })
-                        .catch(function(error){
-                            console.error(error);
-                            return 'error al obtener el nombre y apellido del socio';
-                        });
-                    },
-                    convertirFechaHora(fechaHora){
-                        const fecha = new Date(fechaHora);
-                        const year = fecha.getFullYear().toString().padStart(4, '0');
-                        const month = (fecha.getMonth()+1).toString().padStart(2, '0');
-                        const day = fecha.getDate().toString().padStart(2, '0');
-                        const hours = fecha.getHours().toString().padStart(2,'0');
-                        const minutes = fecha.getMinutes().toString().padStart(2, '0');
-                        const seconds = fecha.getSeconds().toString().padStart(2,'0');
-                        const fechaFormateada = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-                        return fechaFormateada;
-
-                    }
-                }
-
+  <div id="app">
+    <div class="container">
+    <form @submit.prevent="editarPrestamo" class="form-control">
+        <div class="my-3 text-center"> 
+            <label for="id" class="form-label">ID:</label>
+            <input type="text" id="id" v-model="nuevoPrestamo.id" required readonly>
+        </div>
+        <div class="my-3 text-center"> 
+            <label for="inicio" class="form-label">Inicio:</label>
+            <input type="text" id="inicio" v-model="nuevoPrestamo.inicio" required readonly>
+        </div>
+        <div class="mb-3 text-center">
+            <label for="vencimiento" class="form-label">Vencimiento:</label>
+            <input type="text" id="vencimiento" v-model="nuevoPrestamo.vencimiento" required readonly>
+         </div>
+         <div class="mb-3 text-center">
+            <label for="fin" class="form-label">Fin:</label>
+            <input type="datetime-local" id="fin" v-model="nuevoPrestamo.fin" required>
+         </div>
+         <div class="mb-3 text-center">
+            <label for="libro" class="form-label">LibroId:</label>
+            <input type="libro" id="libro" v-model="nuevoPrestamo.libroId" required readonly>
+         </div>
+         <div class="mb-3 text-center">
+            <label for="socio" class="form-label">SocioId:</label>
+            <input type="socio" id="socio" v-model="nuevoPrestamo.socioId" required readonly>
+         </div>
+          
+        <div class="mb-3 text-center">
+              <button class="btn-primary text-center" @click="editarPrestamo" type="submit">Editar Prestamo</button>
+        </div>
+   
+    </form>
+  </div>
+  </div>
+  
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        nuevoPrestamo: {
+          id:'',
+          inicio: '',
+          vencimiento: '',
+          fin: '',
+          libroId: '' ,
+          socioId: ''
+        },
+      },
+      mounted() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const prestamoId = urlParams.get('id');
+        if (prestamoId) {
+          this.buscarPrestamo(prestamoId);
+        }
+      },
+      methods: {
+        editarPrestamo() {
+          const that = this;
+          const data =  JSON.stringify([
+                this.nuevoPrestamo.id, 
+                this.nuevoPrestamo.inicio, 
+                this.nuevoPrestamo.vencimiento, 
+                this.nuevoPrestamo.fin, 
+                this.nuevoPrestamo.libroId, 
+                this.nuevoPrestamo.socioId])
+          
+          fetch(`/api/prestamos/${this.nuevoPrestamo.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: data 
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log('Prestamo editado', data);
+                window.location.href = '/prestamos';
+            })
+            .catch(function(error) {
+              console.error('Error al editar el prestamo:', error);
             });
-        </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-</body>
+        },
+        buscarPrestamo(id){
+          const that = this;
+          fetch(`/api/prestamos/${id}`)
+            .then(response => response.json())
+            .then(data => {
+              const prestamoEncontrado = data;
+              that.nuevoPrestamo.id = prestamoEncontrado[0].id;
+              that.nuevoPrestamo.inicio = prestamoEncontrado[0].inicio;
+              that.nuevoPrestamo.vencimiento = prestamoEncontrado[0].vencimiento;
+              that.nuevoPrestamo.fin = prestamoEncontrado[0].fin;
+              that.nuevoPrestamo.libroId = prestamoEncontrado[0].libroId;
+              that.nuevoPrestamo.socioId = prestamoEncontrado[0].socioId;
+            })
+            .catch(function(error) {
+              console.error('Error al buscar el prestamo:', error);
+            });
+        },
+      }
+    });
+  </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
 </html>

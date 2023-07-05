@@ -1,6 +1,8 @@
 <?php
 
 namespace Src\Bd;
+
+use Exception;
 use PDO;
 use PDOStatement;
 use Src\Modelos\ModeloBase;
@@ -12,16 +14,17 @@ final class SocioDao extends DaoAbstracto
         $datos=self::ejecutar("SELECT * from socios ",[],function( PDO $con,PDOStatement $consulta){
             return $consulta->fetchAll(PDO::FETCH_NUM);
         });
+        
+        $instancias = [];
 
-         $instancias = [];
-         foreach ($datos as $fila) {
-            $socio = new Socio($fila[0], $fila[1], $fila[2], $fila[3]);
+        foreach ($datos as $fila) {
+           
+            $socio= new Socio($fila[0], $fila[1], $fila[2], $fila[3]);
             $instancias[] = $socio;
-         }    
-         return $instancias;
+        }
 
+        return $instancias;
     }
-
     public static function buscarPorId(string $id){
         $query = "SELECT * FROM socios WHERE id = :id LIMIT 1";
         $parametros = array(":id" => $id);
@@ -29,10 +32,34 @@ final class SocioDao extends DaoAbstracto
         $datos = self::ejecutar($query, $parametros, function(PDO $con, PDOStatement $consulta) {
             return $consulta->fetch(PDO::FETCH_ASSOC);
         });
-         $socio = new Socio($datos['id'], $datos['dni'],$datos['nombre_apellido'], $datos['nacimiento']);
+        
+        $socio = new Socio($datos['id'], $datos['dni'], $datos['nombre_apellido'], $datos['nacimiento']);
+
         return $socio;
     }
 
+    public static function buscarDisponiblePorId(string $id){
+       /* $query = "SELECT count(prestamo.*)
+        FROM socios socio
+        JOIN prestamos prestamo
+        ON (prestamo.socio_id = socio.id)
+        WHERE socio.id = ?
+        AND prestamo.fin IS NULL ";*/
+        $query ="SELECT COUNT(*) AS prestamos_count
+        FROM prestamos p
+        JOIN socios s ON p.socio_id = s.id
+        WHERE s.id = :id
+        AND p.fin IS NULL";
+        $parametros = array(":id" => $id);
+        
+        $datos = self::ejecutar($query, $parametros, function(PDO $con, PDOStatement $consulta) {
+            return $consulta->fetch(PDO::FETCH_NUM);
+        });
+        if($datos[0] >= 2){
+            throw new Exception("el socio con id#$id no puede pedir mas prestamo");
+        }
+        return self::buscarPorId($id);
+    }
 
     public static function persistir(ModeloBase $instancia): void{
         $query = "INSERT INTO socios (id,dni, nombre_apellido,nacimiento) VALUES (:id,:dni, :nombreApellido,:nacimiento)";

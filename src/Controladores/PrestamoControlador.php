@@ -2,49 +2,61 @@
 
 namespace Src\Controladores;
 
+use Src\Bd\LibroDao;
 use Src\Bd\PrestamoDao;
-use Src\Modelos\Libro;
-use Src\Modelos\Socio;
+use Src\Bd\SocioDao;
 use Src\Modelos\Prestamo;
+
 
 class PrestamoControlador implements ControladorInterface
 {
-    public static function listar(): array
-    {
-        $prestamoDao = new PrestamoDao();
-        $prestamos = $prestamoDao->listar();
-        return [$prestamos];
-    }
-    public static function buscarPorId(string $id): ?array
-    {
-        $nuevodao = new PrestamoDao();
-        $nuevodao->buscarPorId($id);
-        return [$nuevodao->buscarPorId($id)];
 
+    public static function listar(): array{
+   
+        $prestamosDao= PrestamoDao::listar();
+        $prestamos = [];
+
+        foreach ($prestamosDao as $prestamo){
+            $serializado = $prestamo->serializarBd();
+            $prestamos[]=$serializado;
+        }
+        return $prestamos;
     }
-    public static function crear(array $parametrosCrudos): array
-    {
-        $prestamoDao= new PrestamoDao();
-        $libro = new Libro($parametrosCrudos[3][0],$parametrosCrudos[3][1],$parametrosCrudos[3][2],$parametrosCrudos[3][3],intval($parametrosCrudos[3][4]));
-        $socio = new Socio($parametrosCrudos[4][0],$parametrosCrudos[4][1],$parametrosCrudos[4][2],$parametrosCrudos[4][3]);
-        $prestamo = new Prestamo(null,$parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2],$libro,$socio);
-        $prestamoDao->persistir($prestamo);
+
+    public static function buscarPorId(string $id): ?array{
+    
+       $prestamo= PrestamoDao::buscarPorId($id);
+    
+        return [$prestamo->serializarBd()];
+    }
+
+    public static function crear(array $parametrosCrudos): array{
+
+        $libro=LibroDao::buscarDisponiblePorId($parametrosCrudos[3]['id']);
+        var_dump($libro);
+        $socio=SocioDao::buscarDisponiblePorId($parametrosCrudos[4]['id']);
+        var_dump($socio);
+        $prestamo= new Prestamo(null,$parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2],$libro,$socio);  
+        PrestamoDao::persistir($prestamo);
+   
         return [$prestamo];
     }
+
     public static function actualizar(array $parametrosCrudos): array
     {
-        $nuevodao = new PrestamoDao();
-        $libro = new Libro($parametrosCrudos[4][0],$parametrosCrudos[4][1],$parametrosCrudos[4][2],$parametrosCrudos[4][3],$parametrosCrudos[4][4]);
-        $socio = new Socio($parametrosCrudos[5][0],$parametrosCrudos[5][1],$parametrosCrudos[5][2],$parametrosCrudos[5][3]);
-        $prestamo = new Prestamo($parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2],$parametrosCrudos[3],$libro,$socio);
-        $nuevodao->actualizar($prestamo);
+     
+        $libroDao=new LibroDao();
+        $socioDao=new SocioDao();
+        $libro=$libroDao->buscarPorId($parametrosCrudos[4]);
+        $socio=$socioDao->buscarPorId($parametrosCrudos[5]);  
+        $prestamo= new Prestamo($parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2],$parametrosCrudos[3],$libro,$socio);
+        PrestamoDao::actualizar($prestamo);
         return [$prestamo];
     }
-    public static function borrar(string $id): void
-    {
-        $nuevodao = new PrestamoDao();
-        $nuevodao->borrar($id);
+
+    public static function borrar(string $id): void{
+
+        PrestamoDao::borrar($id);
+
     }
-
-
 }
