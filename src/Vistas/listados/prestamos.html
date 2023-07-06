@@ -1,172 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+    crossorigin="anonymous"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-    <title>Prestamos</title>
+    <title>Vista Prestamo</title>
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Biblioteca</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/libros">Libros</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/socios">Socios</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/prestamos">Prestamos</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-    </nav>
-    <hr>
-    <div id="app">
-        <h3><a href="/prestamos/crear">Nuevo Prestamo</a></h3>
-        <table id="tabla-libros" class="table table-striped table table-bordered border-primary">
-            <thead>
-                <tr>
-                <th>ID</th>
-                <th>Inicio </th>
-                <th>Vencimiento </th>
-                <th>Fin </th>
-                <th>Libro </th>
-                <th>Socio </th>
-                <th>Actualizar </th>
-                <th>Borrar </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="prestamo in prestamos" :key="prestamo.id">
-                    <td>{{ prestamo.id}} </td>
-                    <td>{{ prestamo.inicio}} </td>
-                    <td>{{ prestamo.Vencimiento}} </td>
-                    <td>{{ prestamo.fin}} </td>
-                    <td>{{ libros[prestamos.librosId]}}</td>
-                    <td>{{ socios[prestamo.socioId]}}</td>
-                    <td>
-                        <button class="actualizar-btn btn btn-primary" :data-id="prestamo.id" @click="actualizarPrestamo(prestamo.id)">Actualizar</button>
-                    </td>
-                    <td>
-                        <button class="borrar-btn brn btn-danger" :data-id="prestamo.id" @click="borrarPrestamo(prestamo.id)">Borrar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Biblioteca</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/libros">Libros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/socios">Socios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/prestamos">Prestamos</a>
+          </li>
+     
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Buscar</button>
+        </form>
+      </div>
     </div>
+  </nav>
+    <div id="app">
+    
+        <h3><a href="/prestamos/crear">Nuevo Prestamo</a></h3>
+        <table
+          id="tabla-prestamo"
+          class="table table-striped table table-bordered border-primary"
+        >
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Inicio</th>
+              <th>Vencimiento</th>
+              <th>Fin</th>
+              <th>Libro</th>
+              <th>Socio</th>
+              <th>Actualizar</th>
+              <th>Borrar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="prestamo in prestamos" :key="prestamo.id">
+              <td>{{ prestamo.id }}</td>
+              <td>{{ prestamo.inicio}}</td>
+              <td>{{ prestamo.vencimiento }}</td>
+              <td>{{ prestamo.fin }}</td>
+              <td>{{libros[prestamo.libroId]}}</td>
+              <td>{{socios[prestamo.socioId]}}</td>
+              <td>
+                <button
+                  class="actualizar-btn btn btn-primary"
+                  :data-id="prestamo.id"
+                  @click="actualizarPrestamo(prestamo.id)"
+                >
+                  Actualizar
+                </button>
+              </td>
+              <td>
+                <button
+                  class="borrar-btn btn btn-danger"
+                  :data-id="prestamo.id"
+                  @click="borrarPrestamo(prestamo.id)"
+                >
+                  Borrar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <script>
+      <script>
         var app = new Vue({
-            el: '#app',
-            data: {
-                prestamos: [],
-                libros: {},
-                socios: {},
-            },
-            mounted() {
-                const that = this;
-                fetch('/api/prestamos')
-                    .then(function(response) {
-                        return response.json();
-                    })
-                    .then(function(data) {
-                        that.prestamos = data;
+          el: "#app",
+          data: {
+            prestamos: [],
+            libros:{},
+            socios:{},
+          },
+          mounted() {
+  var that = this;
+  console.log("llamada fetch en mounted");
 
-                        //obtener detalle de los libros prestados
+  // Obtener todos los préstamos
+  fetch('/api/prestamos')
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      that.prestamos = data;
 
-                        that.prestamos.forEach(function(prestamo){
-                            fetch('/api/libros/'+ prestamo.libroId)
-                            .then(function(response){
-                                return response.json();
-                            })
-                            .then(function(libroData){
-                                console.log(libroData);
-                                that.$set(that.libros, prestamo.libroId, libroData[0].titulo);
-                                console.log(that.libros[prestamo.libroId]+ "esto es el valor de libro [prestamo.libroId]");
-                            })
-                    .catch(function(error) {
-                        console.error(error);
-                    });
-           
-                    //obtener detalle del socios
-                    fetch('/api/socios/'+ prestamo.socioId)
-                    .then(function (response){
-                        return response.json();
-                    })
-                    .then(function (socioData) {
-                        console.log(socioData);
-                            that.$set(that.socios, prestamo.socioId, socioData[0].nombreApellido);
-                            console.log(that.socios[pretamo.socioId]+ "esto es el valor de socios[prestamo.socioId]");
-                    });
+      // Obtener detalles de los libros prestados
+      that.prestamos.forEach(function (prestamo) {
+        fetch('/api/libros/' + prestamo.libroId)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (libroData) {
+            console.log(libroData);
+            that.$set(that.libros, prestamo.libroId, libroData[0].titulo);
+            console.log(that.libros[prestamo.libroId] + " esto es el valor de libros[prestamo.libroId]");
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+
+        // Obtener detalles del socio
+        fetch('/api/socios/' + prestamo.socioId)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (socioData) {
+            console.log(socioData);
+            that.$set(that.socios, prestamo.socioId, socioData[0].nombreApellido);
+            console.log(that.socios[prestamo.socioId] + " esto es el valor de socios[prestamo.socioId]");
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      });
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+},
+
+          methods: {
+            borrarPrestamo(id) {
+              fetch('/api/prestamos/' + id, {
+                method: "DELETE",
+              })
+                .then(function (response) {
+                  console.log("Prestamo borrado con éxito");
+                  window.location.href = "/prestamos";
+                })
+                .catch(function (error) {
+                  console.error("Error al borrar el prestamo:", error);
                 });
-            })
-            .catch(function(error) {
-                        console.error(error);
+            },
+            actualizarPrestamo(id) {
+              const editUrl = `/prestamos/editar?id=${id}`;
+              window.location.href = editUrl;
+            },
+         
+          },
+          updated() {
+            var that = this;
+            this.$nextTick(function () {
+              var actualizarBtns = document.getElementsByClassName(
+                "actualizar-btn"
+              );
+              for (var j = 0; j < actualizarBtns.length; j++) {
+                var btn = actualizarBtns[j];
+                btn.addEventListener("click", function () {
+                  var id = this.getAttribute("data-id");
+                  that.actualizarPrestamo(id);
+                });
+              }
+  
+              var borrarBtns = document.getElementsByClassName("borrar-btn");
+              for (var k = 0; k < borrarBtns.length; k++) {
+                var btn = borrarBtns[k];
+                btn.addEventListener("click", function () {
+                  var id = this.getAttribute("data-id");
+                  that.borrarPrestamo(id);
+                });
+              }
             });
-        },
-            methods: {
-                borrarPrestamo(id) {
-                    fetch('/api/prestamos/' + id, {
-                        method: "DELETE",
-                    })
-                        .then(function(response) {
-                            console.log('prestamo borrado con exito');
-                            window.location.href = '/prestamos';
-                        })
-                        .catch(function(error) {
-                            console.error('error al borrar el prestamo:', error);
-                        });
-                },
-                actualizarPrestamo(id) {
-                    const editUrl = `/prestamos/editar?id=${id}`;
-                    window.location.href = editUrl;
-                },
-            },
-            updated() {
-                var that = this;
-                this.$nextTick(function() {
-                    var actualizarBtns = document.getElementsByClassName('actualizar-btn');
-                    for (var j = 0; j < actualizarBtns.length; j++) {
-                        var btn = actualizarBtns[j];
-                        btn.addEventListener('click', function() {
-                            var id = this.getAttribute('data-id');
-                            that.actualizarPrestamo(id);
-                        });
-                    }
-
-                    var borrarBtns = document.getElementsByClassName('borrar-btn');
-                    for (var k = 0; k < borrarBtns.length; k++) {
-                        var btn = borrarBtns[k];
-                        btn.addEventListener('click', function() {
-                            var id = this.getAttribute('data-id');
-                            that.borrarPrestamo(id);
-                        });
-                    }
-                });
-            }
+          },
         });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      </script>
+  
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
-    <footer class="bg-dark text-white text-center p-3 mt-5">
-        © 2023 Biblioteca Las Grutas. Todos los derechos reservados.
-    </footer>
+        crossorigin="anonymous"
+      ></script>
 </body>
-
 </html>

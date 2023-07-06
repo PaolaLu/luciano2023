@@ -1,170 +1,160 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <title>Nuevo Prestamo</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Biblioteca</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/libros">Libros</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/socios">Socios</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/prestamos">Prestamos</a>
-            </li>
-          </ul>
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Buscar</button>
-          </form>
-        </div>
-      </div>
-    </nav>
-    <h1 class="text-center mt-5">Alta prestamo</h1>
-
-    <div id="app">
-      <div class="container">
-        <form @submit.prevent="crearPrestamo" class="form-control">
-          <div class="my-3 text-center"> 
-            <label for="inicio" class="form-label">Inicio:</label>
-            <input type="datetime-local" id="inicio" v-model="nuevoPrestamo.inicio" required>
-          </div>
-          <div class="mb-3 text-center">
-            <label for="vencimiento" class="form-label">Vencimiento:</label>
-            <input type="datetime-local" id="vencimiento" v-model="nuevoPrestamo.vencimiento" required>
-          </div>
-          <div class="mb-3 text-center">
-            <label for="fin" class="form-label">Fin:</label>
-            <input type="datetime-local" id="fin" v-model="nuevoPrestamo.fin" disabled>
-          </div>
-
-          <div class="mb-3 text-center">
-            <label for="libro">Libro:</label>
-            <select id="libro" v-model="libroSeleccionado" required>
-              <option v-for="libro in libros" :value="libro">{{ libro['titulo'] }}</option>
-            </select>
-          </div>
-          
-          <div class="mb-3 text-center">
-            <label for="socio">Socio:</label>
-            <select id="socio" v-model="socioSeleccionado" required>
-              <option v-for="socio in socios" :value="socio">{{ socio['nombreApellido'] }}</option>
-            </select>
-          </div>
-
-          <div class="mb-3 text-center">
-            <button class="btn-primary text-center" type="submit">Crear Prestamo</button>
-          </div>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Nuevo Prestamo</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Biblioteca</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/libros">Libros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/socios">Socios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/prestamos">Prestamos</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Buscar</button>
         </form>
       </div>
     </div>
-  
-    <script>
-      new Vue({
-        el: '#app',
-        data: {
-          libroSeleccionado: {},
-          socioSeleccionado: {},
-          nuevoPrestamo: {
-            inicio: '',
-            vencimiento: '',
-            fin: '',
-            libro_id: '',
-            socio_id: ''
-          },
-          libros: [],
-          socios: []
-        },
-        methods: {
-          crearPrestamo() {
-            // Obtener las fechas y convertirlas al formato deseado
-            const inicioFormateado = this.convertirFecha(this.nuevoPrestamo.inicio);
-            const vencimientoFormateado = this.convertirFecha(this.nuevoPrestamo.vencimiento);
+  </nav>
+  <h1 class="text-center mt-5">Alta prestamo</h1>
+
+  <div id="app">
+    <div class="container">
+      <form @submit.prevent="crearPrestamo" class="form-control">
+        <div class="my-3 text-center"> 
+          <label for="inicio" class="form-label">Inicio:</label>
+          <input type="datetime-local" id="inicio" v-model="nuevoPrestamo.inicio" required>
+        </div>
+        <div class="mb-3 text-center">
+          <label for="vencimiento" class="form-label">Vencimiento:</label>
+          <input type="datetime-local" id="vencimiento" v-model="nuevoPrestamo.vencimiento" required>
+        </div>
+        <div class="mb-3 text-center">
+          <label for="fin" class="form-label">Fin:</label>
+          <input type="datetime-local" id="fin" v-model="nuevoPrestamo.fin" disabled>
+        </div>
+
+        <div class="mb-3 text-center">
+          <label for="libro">Libro:</label>
+          <select id="libro" v-model="libroSeleccionado" required>
+            <option v-for="libro in libros" :value="libro">{{ libro['titulo'] }}</option>
+            
+        </select>
+      </div>
       
-            // Hacer la solicitud POST con los valores seleccionados en un objeto
-           /* const prestamoData = {
-              inicio: inicioFormateado,
-              vencimiento: vencimientoFormateado,
-              fin: null,
-              libro_id: this.libroSeleccionado,
-              socio_id: this.socioSeleccionado
-            };*/
+      <div class="mb-3 text-center">
+        <label for="socio">Socio:</label>
+        <select id="socio" v-model="socioSeleccionado" required>
+          <option v-for="socio in socios" :value="socio">{{ socio['nombreApellido'] }}</option>
+        </select>
+      </div>
 
-            fetch('/api/prestamos', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify([
-              inicioFormateado,
-              vencimientoFormateado,
-               null,
-               this.libroSeleccionado,
-               this.socioSeleccionado
-              ])
-            })
-              .then(response => {
-                if (response.ok) {
-                  window.location.href = '/prestamos';
-                } else {
-                  throw new Error('Error al crear el prestamo.');
-                }
-              })
-              .catch(error => {
-                console.error(error);
-              });
-          },
-          obtenerLibros() {
-            fetch('/api/libros')
-              .then(response => response.json())
-              .then(data => {
-                this.libros = data;
-              })
-              .catch(error => {
-                console.error('Error al obtener los libros:', error);
-              });
-          },
-          obtenerSocios() {
-            fetch('/api/socios')
-              .then(response => response.json())
-              .then(data => {
-                this.socios = data;
-              })
-              .catch(error => {
-                console.error('Error al obtener los socios:', error);
-              });
-          },
-          convertirFecha(fecha) {
-            // Obtener el valor del input
-            const fechaInput = fecha;
-            // Convertir el formato de fecha
-            const fechaConvertida = fechaInput.replace('T', ' ');
-            return fechaConvertida;
-          }
-        },
-        mounted() {
-          this.obtenerLibros();
-          this.obtenerSocios();
-        }
-      });
-    </script>
+      <div class="mb-3 text-center">
+        <button class="btn-primary text-center" type="submit">Crear Prestamo</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  </body>
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      libroSeleccionado: {},
+      socioSeleccionado: {},
+      nuevoPrestamo: {
+        inicio: '',
+        vencimiento: '',
+        fin: '',
+        libro_id: '',
+        socio_id: ''
+      },
+      libros: [],
+      socios: []
+    },
+    methods: {
+      crearPrestamo() {
+        const inicioFormateado = this.convertirFecha(this.nuevoPrestamo.inicio);
+        const vencimientoFormateado = this.convertirFecha(this.nuevoPrestamo.vencimiento);
+
+        fetch('/api/prestamos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify([
+            inicioFormateado,
+            vencimientoFormateado,
+            null,
+            this.libroSeleccionado,
+            this.socioSeleccionado
+          ])
+        })
+          .then(response => {
+            if (response.ok) {
+              window.location.href = '/prestamos';
+            } else {
+              throw new Error('Error al crear el prestamo.');
+            }
+          })
+          .catch(error => {
+            alert('Error al crear el prestamo, el libro ya esta pedido.');
+            console.error(error);
+          });
+      },
+      obtenerLibros() {
+        fetch('/api/libros')
+          .then(response => response.json())
+          .then(data => {
+            this.libros = data;
+          })
+          .catch(error => {
+            console.error('Error al obtener los libros:', error);
+          });
+      },
+      obtenerSocios() {
+        fetch('/api/socios')
+          .then(response => response.json())
+          .then(data => {
+            this.socios = data;
+          })
+          .catch(error => {
+            console.error('Error al obtener los socios:', error);
+          });
+      },
+      convertirFecha(fecha) {
+        const fechaInput = fecha;
+        const fechaConvertida = fechaInput.replace('T', ' ');
+        return fechaConvertida;
+      }
+    },
+    mounted() {
+      this.obtenerLibros();
+      this.obtenerSocios();
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
 </html>
