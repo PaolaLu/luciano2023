@@ -14,7 +14,6 @@ final class SocioDao extends DaoAbstracto
         $datos=self::ejecutar("SELECT * from socios ",[],function( PDO $con,PDOStatement $consulta){
             return $consulta->fetchAll(PDO::FETCH_NUM);
         });
-        
         $instancias = [];
 
         foreach ($datos as $fila) {
@@ -22,7 +21,6 @@ final class SocioDao extends DaoAbstracto
             $socio= new Socio($fila[0], $fila[1], $fila[2], $fila[3]);
             $instancias[] = $socio;
         }
-
         return $instancias;
     }
     public static function buscarPorId(string $id){
@@ -34,17 +32,11 @@ final class SocioDao extends DaoAbstracto
         });
         
         $socio = new Socio($datos['id'], $datos['dni'], $datos['nombre_apellido'], $datos['nacimiento']);
-
         return $socio;
     }
 
-    public static function buscarDisponiblePorId(string $id){
-       /* $query = "SELECT count(prestamo.*)
-        FROM socios socio
-        JOIN prestamos prestamo
-        ON (prestamo.socio_id = socio.id)
-        WHERE socio.id = ?
-        AND prestamo.fin IS NULL ";*/
+    public static function buscarDisponiblePorId(string $id)
+    {
         $query ="SELECT COUNT(*) AS prestamos_count
         FROM prestamos p
         JOIN socios s ON p.socio_id = s.id

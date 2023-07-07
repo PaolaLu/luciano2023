@@ -17,9 +17,8 @@ class SocioControlador implements ControladorInterface
         }
         return $socios;
     }
-    public static function buscarPorId(string $id): ?array{
-
-        
+    public static function buscarPorId(string $id): ?array
+    {
         $socioDao= SocioDao::buscarPorId($id);
         $socio=[];
         $serializado=$socioDao->serializarJson();

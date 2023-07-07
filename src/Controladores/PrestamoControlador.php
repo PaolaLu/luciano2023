@@ -33,9 +33,7 @@ class PrestamoControlador implements ControladorInterface
     public static function crear(array $parametrosCrudos): array{
 
         $libro=LibroDao::buscarDisponiblePorId($parametrosCrudos[3]['id']);
-        var_dump($libro);
         $socio=SocioDao::buscarDisponiblePorId($parametrosCrudos[4]['id']);
-        var_dump($socio);
         $prestamo= new Prestamo(null,$parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2],$libro,$socio);  
         PrestamoDao::persistir($prestamo);
    

@@ -33,14 +33,13 @@ public function serializarBd(): array
 
 public function serializarJson(): array
 {
-    
-    return [
-        'id'=> $this->id,
-        'isbn'=> $this->isbn,
-        'titulo'=> $this->titulo,
-        'autor'=> $this->autor,
-        'edicion'=> $this->edicion,
-    ];
+     return [
+                'id'=> $this->id,
+                'isbn'=> $this->isbn,
+                'titulo'=> $this->titulo,
+                'autor'=> $this->autor,
+                'edicion'=> $this->edicion,
+              ];
 }
 
 public function setTitulo(string $nuevoTitulo):void {

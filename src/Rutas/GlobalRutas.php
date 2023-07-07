@@ -11,7 +11,7 @@ final class GlobalRutas implements RutasInterface
   public static function configurar(App $app): void
   {
     $app->get('/', function (Request $peticion, Response $respuesta, $args) {
-      return Utileria::responderConVista($respuesta, 'home', [
+      return Utileria::responderConVista($respuesta, 'listados/libros', [
         'titulo' => 'TP Final PWD 2020 : Cambiar nombre',
       ]);
     });

@@ -29,15 +29,11 @@
             <a class="nav-link" href="/prestamos">Prestamos</a>
           </li>
         </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Buscar</button>
-        </form>
       </div>
     </div>
   </nav>
+  <hr>
   <h1 class="text-center mt-5">Alta prestamo</h1>
-
   <div id="app">
     <div class="container">
       <form @submit.prevent="crearPrestamo" class="form-control">
@@ -118,7 +114,7 @@
             }
           })
           .catch(error => {
-            alert('Error al crear el prestamo, el libro ya esta pedido.');
+            alert('Error al crear el prestamo, el libro ya esta prestado.');
             console.error(error);
           });
       },

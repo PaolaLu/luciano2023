@@ -53,7 +53,7 @@ class PrestamoDaoTest
     $instancia = new Prestamo(
       null,
       '1989-12-23T18:23:32',
-      '1989-12-28T18:23:32',
+      null,
       null,
       // Como no sabemos a priori cuáles son los IDs,
       // traemos todos y elegimos uno al azar.
@@ -87,14 +87,10 @@ class PrestamoDaoTest
   {
     $id = static::$id;
     $antes = PrestamoDao::buscarPorId($id);
-
-    $antes->setFin('2020-12-27T15:23:32');
-
+    $antes->setFin('2020-12-27T15:23:45');
     PrestamoDao::actualizar($antes);
-
     $despues = PrestamoDao::buscarPorId($id);
-
-    if ($antes->fin() !== $despues->fin()) {
+    if ((string) $antes->fin() !== (string)$despues->fin()) {
       throw new \Exception(
         "\nPrestamoDaoTest::testActualizar => ¡Falló! {$antes->fin()}" .
           " !== {$despues->fin()}\n\n"
