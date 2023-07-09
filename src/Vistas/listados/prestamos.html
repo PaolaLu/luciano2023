@@ -96,21 +96,20 @@
             socios:{},
           },
           mounted() {
-  var that = this;
-  console.log("llamada fetch en mounted");
+           var that = this;
+           console.log("llamada fetch en mounted");
 
-  // Obtener todos los préstamos
-  fetch('/api/prestamos')
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      that.prestamos = data;
 
-      // Obtener detalles de los libros prestados
-      that.prestamos.forEach(function (prestamo) {
-        fetch('/api/libros/' + prestamo.libroId)
-          .then(function (response) {
+          fetch('/api/prestamos')
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (data) {
+              that.prestamos = data;
+
+              that.prestamos.forEach(function (prestamo) {
+          fetch('/api/libros/' + prestamo.libroId)
+           .then(function (response) {
             return response.json();
           })
           .then(function (libroData) {
@@ -122,8 +121,8 @@
             console.error(error);
           });
 
-        // Obtener detalles del socio
-        fetch('/api/socios/' + prestamo.socioId)
+
+         fetch('/api/socios/' + prestamo.socioId)
           .then(function (response) {
             return response.json();
           })
@@ -169,7 +168,7 @@
               );
               for (var j = 0; j < actualizarBtns.length; j++) {
                 var btn = actualizarBtns[j];
-                btn.addEventListener("click", function () {
+                  btn.addEventListener("click", function () {
                   var id = this.getAttribute("data-id");
                   that.actualizarPrestamo(id);
                 });

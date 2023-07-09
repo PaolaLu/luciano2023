@@ -23,12 +23,14 @@ class PrestamoControlador implements ControladorInterface
         return $prestamos;
     }
 
+    
     public static function buscarPorId(string $id): ?array{
     
        $prestamo= PrestamoDao::buscarPorId($id);
     
         return [$prestamo->serializarBd()];
     }
+
 
     public static function crear(array $parametrosCrudos): array{
 

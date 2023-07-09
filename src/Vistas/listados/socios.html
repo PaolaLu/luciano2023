@@ -54,9 +54,6 @@
                 <td>{{ socio.dni }}</td>
                 <td>{{ socio.nombreApellido }}</td>
                 <td>{{ socio.nacimiento }}</td>
-
-               
-               
                 <td>
                     <button class="actualizar-btn btn btn-primary" :data-id="socio.id" @click="actualizarSocio(socio.id)">Actualizar</button>
                 </td>
@@ -76,6 +73,7 @@
         },
         mounted(){
             const that = this;
+
              fetch('/api/socios/')
                     .then(function(response) {
                      return response.json();
@@ -91,6 +89,7 @@
              methods: {
                 borrarSocio(id) {
                     const  that = this;
+                    
                     fetch('/api/socios/' + id,{
                         method: 'DELETE'
                     })

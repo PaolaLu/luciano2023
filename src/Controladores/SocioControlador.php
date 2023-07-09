@@ -17,6 +17,8 @@ class SocioControlador implements ControladorInterface
         }
         return $socios;
     }
+
+
     public static function buscarPorId(string $id): ?array
     {
         $socioDao= SocioDao::buscarPorId($id);
@@ -27,6 +29,8 @@ class SocioControlador implements ControladorInterface
         return $socio;
        
     }
+
+
     public static function crear(array $parametrosCrudos): array{
 
         $socio= new Socio(null,$parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2]);
@@ -34,12 +38,17 @@ class SocioControlador implements ControladorInterface
    
         return [$socio];
     }
+
+
+
     public static function actualizar(array $parametrosCrudos): array
     {
         $socio= new Socio($parametrosCrudos[0],$parametrosCrudos[1],$parametrosCrudos[2],$parametrosCrudos[3]);
         SocioDao::actualizar($socio);
         return [$socio];
     }
+
+    
     public static function borrar(string $id): void{
 
         SocioDao::borrar($id);

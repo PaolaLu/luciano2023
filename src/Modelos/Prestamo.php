@@ -57,7 +57,7 @@ class Prestamo extends ModeloBase
     }
 
     public function setFin($fecha){
-        $this->fin=LocalDateTime::parse($fecha);//$this->revertirFormatoFecha($fecha));
+        $this->fin=LocalDateTime::parse($fecha);
     }
 
     public  function revertirFormatoFecha($fecha) {
